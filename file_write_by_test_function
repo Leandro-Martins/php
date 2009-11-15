@@ -1,0 +1,28 @@
+Array
+(
+    [VendedorEmail] => emaildovendedor@nasa.gov
+    [TransacaoID] => TRANSACAO597
+    [Referencia] => 238
+    [TipoFrete] => EN
+    [ValorFrete] => 17,80
+    [Anotacao] => Alguma anotação enviada pelo clien
+    [DataTransacao] => 25/03/2009 18:30:28
+    [TipoPagamento] => Boleto
+    [StatusTransacao] => Aprovado
+    [CliNome] => Cliente de Testes
+    [CliEmail] => teste@nasa.gov
+    [CliEndereco] => Rua Anatômica do sul
+    [CliNumero] => 75
+    [CliComplemento] => apto 580
+    [CliBairro] => Palacio de Alcantara
+    [CliCidade] => São Paulo
+    [CliEstado] => SP
+    [CliCep] => 28000000
+    [CliTelefone] => 11 12345678
+    [ProdID_1] => 150
+    [ProdDescricao_1] => Um simples produto com uma descrição
+    [ProdValor_1] => 1580,35
+    [ProdQuantidade_1] => 1
+    [ProdFrete] => 150,00
+    [NumItens] => 1
+)
