@@ -3,5 +3,8 @@
 
 class Pagseguro
 {
-
+    public function __get($key)
+    {
+        return true;
+    }
 }

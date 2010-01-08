@@ -17,6 +17,15 @@ class Pagseguro_Test extends PHPUnit_Framework_TestCase
     {
         $this->assertTrue(class_exists('Pagseguro'));
     }
+
+    public function testGetValidProprieties()
+    {
+        $p = new Pagseguro;
+        foreach (array('carrinho', 'frete', 'retorno') as $item) {
+            $saida = $p->$item;
+            $this->assertTrue((bool) $saida);
+        }
+    }
 }
 
 // Fazendo o sistema rodar sozinho
