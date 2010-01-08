@@ -38,6 +38,8 @@ class Pagseguro_Test extends PHPUnit_Framework_TestCase
     {
         foreach (array('carrinho', 'frete', 'retorno') as $item) {
             $element = PagSeguro::$item();
+            $this->assertTrue((bool) $element);
+            $this->assertEquals('Pagseguro_'.ucfirst($item), get_class($element));
         }
     }
 }
