@@ -5,6 +5,9 @@ class Pagseguro
 {
     public function __get($key)
     {
-        return true;
+        if (in_array($key, array('carrinho', 'frete', 'retorno'))) {
+            return true;
+        }
+        throw new Exception('Invalid argument required.');
     }
 }

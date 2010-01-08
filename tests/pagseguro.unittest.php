@@ -26,6 +26,13 @@ class Pagseguro_Test extends PHPUnit_Framework_TestCase
             $this->assertTrue((bool) $saida);
         }
     }
+
+    public function testGetInvalidProprieties()
+    {
+        $p = new Pagseguro;
+        $this->setExpectedException('Exception');
+        $random = $p->invalidAttribute;
+    }
 }
 
 // Fazendo o sistema rodar sozinho
