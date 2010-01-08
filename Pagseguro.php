@@ -28,7 +28,7 @@ class Pagseguro
     public function __get($key)
     {
         if (in_array($key, array('carrinho', 'frete', 'retorno'))) {
-            return true;
+            return $this->getModule(ucfirst($key));
         }
         throw new Exception('Invalid argument required.');
     }
