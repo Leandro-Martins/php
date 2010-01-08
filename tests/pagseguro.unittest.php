@@ -33,6 +33,13 @@ class Pagseguro_Test extends PHPUnit_Framework_TestCase
         $this->setExpectedException('Exception');
         $random = $p->invalidAttribute;
     }
+
+    public function testCallValidStaticMethods()
+    {
+        foreach (array('carrinho', 'frete', 'retorno') as $item) {
+            $element = PagSeguro::$item();
+        }
+    }
 }
 
 // Fazendo o sistema rodar sozinho
