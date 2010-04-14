@@ -3,24 +3,25 @@
 
 class Pagseguro
 {
-    private function getModule($module)
+    public function getModule($module, $args=null)
     {
+        $module = ucfirst(strtolower($module));
         require_once dirname(__FILE__).DIRECTORY_SEPARATOR.$module.'.php';
         $module = "Pagseguro_{$module}";
-        return new $module;
+        return new $module($args);
     }
 
-    static function carrinho()
+    static function carrinho($args=null)
     {
-        return self::getModule('Carrinho');
+        return self::getModule('Carrinho', $args);
     }
 
-    static function frete()
+    static function frete($args=null)
     {
         return self::getModule('Frete');
     }
 
-    static function retorno()
+    static function retorno($args=null)
     {
         return self::getModule('Retorno');
     }

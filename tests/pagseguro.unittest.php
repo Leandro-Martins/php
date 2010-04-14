@@ -43,6 +43,14 @@ class Pagseguro_Test extends PHPUnit_Framework_TestCase
             $this->assertEquals('Pagseguro_'.ucfirst($item), get_class($element));
         }
     }
+
+    public function testCallWithArguments()
+    {
+        $carrinho = PagSeguro::carrinho('mike@visie.com.br');
+        $this->assertEquals('mike@visie.com.br', $carrinho->email_cobranca, "Passou o valor para o e-mail no construct");
+        $carrinho = PagSeguro::getModule('carrinho', 'michael@uol.com.br');
+        $this->assertEquals('michael@uol.com.br', $carrinho->email_cobranca, "Usou getModule e passou e-mail de cobranca");
+    }
 }
 
 // Fazendo o sistema rodar sozinho

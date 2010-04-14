@@ -3,4 +3,12 @@
 
 class Pagseguro_Carrinho
 {
+    public $email_cobranca = null;
+
+    public function __construct($argumentos=null)
+    {
+        if (gettype ($argumentos)) {
+            $this->email_cobranca = $argumentos;
+        }
+    }
 }
