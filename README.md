@@ -28,14 +28,18 @@ Para você utilizar os submódulos você pode usar um dos seguintes meios:
 
 # Classe de carrinho
 
-O exemplo mostra como fazer um carrinho de compras básico com o PagSeguro.
+Forma básica, setando apenas o e-mail de cobrança
 
     $carrinho = Pagseguro::carrinho('mike@visie.com.br');
-    // Você também pode passar um array ou objeto de argumentos
+
+Você também pode passar um array ou objeto de argumentos
+
     $checkout = Pagseguro::carrinho(array(
         'email_cobranca' => 'mike@visie.com.br',
     ));
-    // Imagine que você tem um método que retorna um objeto
+
+Imagine que você tem um método que retorna um objeto
+
     function dados_loja() {
        $data = new stdClass;
        $data->email_cobranca = 'mike@visie.com.br'
@@ -43,7 +47,9 @@ O exemplo mostra como fazer um carrinho de compras básico com o PagSeguro.
     }
     $data = dados_loja();
     $cart = Pagseguro::carrinho($data);
-    // Ou mesmo que "puxe" do banco de dados
+
+Ou mesmo que "puxe" do banco de dados
+
     function dados_loja_database() {
         $banco = new Banco;
         $result = $banco->query('SELECT * FROM config');
@@ -66,3 +72,11 @@ E o seguinte código php:
 
     $data = simplexml_load_file('config.xml');
     $carrinho = Pagseguro::carrinho($data);
+
+## O método set
+
+Caso você prefira definir os parâmetros após criar o objeto de carrinho, você pode usar o método `set` que configra o carrinho de compras.
+
+    $pagseguro = new Pagseguro;
+    $carrinho = $pagseguro->carrinho;
+    $carrinho->set('email_cobranca', 'mike@visie.com.br');
