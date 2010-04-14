@@ -30,3 +30,4 @@ Para você utilizar os submódulos você pode usar um dos seguintes meios:
 
 <script src="http://gist.github.com/366056.js?file=checkout.php"></script>
 
+O exemplo mostra como fazer um carrinho de compras básico com o PagSeguro.
