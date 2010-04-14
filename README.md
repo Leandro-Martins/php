@@ -32,4 +32,3 @@ O exemplo mostra como fazer um carrinho de compras básico com o PagSeguro.
 
     <?php 
         $carrinho = Pagseguro::carrinho('mike@visie.com.br');
-    ?>

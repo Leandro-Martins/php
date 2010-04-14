@@ -12,6 +12,11 @@ require_once 'Pagseguro.php';
 require_once 'Carrinho.php';
 require_once 'PHPUnit/Framework.php';
 
+class WorngCarrinho
+{
+    private $email_cobranca = 'fake@visie.com.br';
+}
+
 class Carrinho_Test extends PHPUnit_Framework_TestCase
 {
     public function testConstruct()
@@ -48,6 +53,37 @@ class Carrinho_Test extends PHPUnit_Framework_TestCase
         $carrinho = $pagseguro->getModule('carrinho', $email);
         $this->assertEquals('Pagseguro_Carrinho', get_class($carrinho), 'Instanciou o carrinho pelo getModule');
         $this->assertEquals($email, $carrinho->email_cobranca);
+    }
+
+    public function testPassObjetOrArray()
+    {
+        $data = array(
+            'email_cobranca' => 'mike@visie.com.br',
+            'id' => 'formulario_pagseguro',
+        );
+        $carrinho = new Pagseguro_Carrinho($data);
+        $this->assertEquals($data['email_cobranca'], $carrinho->email_cobranca);
+        $this->assertEquals($data['id'], $carrinho->id);
+
+        $data = (object) $data;
+        $carrinho = new Pagseguro_Carrinho($data);
+        $this->assertEquals($data->email_cobranca, $carrinho->email_cobranca);
+        $this->assertEquals($data->id, $carrinho->id);
+
+        $data_xml = new SimpleXMLElement('<data>'
+              . '<email_cobranca>mike@visie.com.br</email_cobranca>'
+              . '<id>formulario_pagseguro</id>'
+              . '</data>');
+        $carrinho = new Pagseguro_Carrinho($data_xml);
+        $this->assertEquals($data->email_cobranca, $carrinho->email_cobranca);
+        $this->assertEquals($data->id, $carrinho->id);
+    }
+
+    public function testNotAcceptWorngCartArgs()
+    {
+        $data = new WorngCarrinho;
+        $carrinho = new Pagseguro_Carrinho($data);
+        $this->assertEquals($carrinho->email_cobranca, null);
     }
 }
 
