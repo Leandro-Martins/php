@@ -15,10 +15,18 @@ class Pagseguro_Carrinho
             $itens_config = array('email_cobranca', 'id');
             foreach ($itens_config as $item) {
                 if (isset($args[$item])) {
-                    settype($args[$item], 'string');
-                    $this->$item = $args[$item];
+                    $this->set($item, $args[$item]);
                 }
             }
+        }
+    }
+
+    public function set($key, $value=null)
+    {
+        $valids = array('email_cobranca', 'id');
+        if (in_array($key, $valids)) {
+            settype($value, 'string');
+            $this->$key = $value;
         }
     }
 }

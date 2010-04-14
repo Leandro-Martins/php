@@ -85,6 +85,14 @@ class Carrinho_Test extends PHPUnit_Framework_TestCase
         $carrinho = new Pagseguro_Carrinho($data);
         $this->assertEquals($carrinho->email_cobranca, null);
     }
+
+    public function testSetBasico()
+    {
+        $email    = 'mike@visie.com.br';
+        $carrinho = new Pagseguro_Carrinho;
+        $carrinho->set('email_cobranca', $email);
+        $this->assertEquals($email, $carrinho->email_cobranca);
+    }
 }
 
 // Fazendo o sistema rodar sozinho
