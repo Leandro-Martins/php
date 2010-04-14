@@ -28,6 +28,8 @@ Para você utilizar os submódulos você pode usar um dos seguintes meios:
 
 # Classe de carrinho
 
-<script src="http://gist.github.com/366056.js?file=checkout.php"></script>
-
 O exemplo mostra como fazer um carrinho de compras básico com o PagSeguro.
+
+    <?php 
+        $carrinho = Pagseguro::carrinho('mike@visie.com.br');
+    ?>
