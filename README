@@ -1,0 +1,28 @@
+# Biblioteca PagSeguro para PHP
+
+p=.!https://p.simg.uol.com.br/pagseguro/i/pagseguro_uol.gif
+
+A biblioteca é composta de três submódulos: Carrinho, Frete e Retorno.
+
+Para você utilizar os submódulos você pode usar um dos seguintes meios:
+
+## Via método estático
+
+    $carrinho = Pagseguro::Carrinho();
+    $frete    = Pagseguro::Frete();
+    $retorno  = Pagseguro::Retorno();
+
+## Via chamada de atributos
+
+    $pagseguro = new Pagseguro;
+    $carrinho  = $pagseguro->carrinho;
+    $frete     = $pagseguro->frete;
+    $retorno   = $pagseguro->retorno;
+
+## Via método global getModule
+
+    $pagseguro = new Pagseguro;
+    $carrinho  = $pagseguro->getModule('carrinho');
+    $frete     = $pagseguro->getModule('frete');
+    $retorno   = $pagseguro->getModule('retorno');
+
