@@ -5,10 +5,10 @@ class Pagseguro_Carrinho
 {
     public $email_cobranca = null;
 
-    public function __construct($argumentos=null)
+    public function __construct($args=null)
     {
-        if (gettype ($argumentos)) {
-            $this->email_cobranca = $argumentos;
+        if (gettype ($args)) {
+            $this->email_cobranca = $args;
         }
     }
 }
