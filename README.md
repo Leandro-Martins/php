@@ -1,5 +1,7 @@
 # Biblioteca PagSeguro para PHP
 
+p=.!https://p.simg.uol.com.br/pagseguro/i/pagseguro_uol.gif
+
 A biblioteca é composta de três submódulos: Carrinho, Frete e Retorno.
 
 Para você utilizar os submódulos você pode usar um dos seguintes meios:
