@@ -45,6 +45,10 @@ class Pagseguro_Carrinho
         if (!is_scalar($value)) {
             throw new Exception('Invalid argument to convert: '.gettype($value));
         }
+        if ('string' === gettype($value)) {
+            $value = preg_replace('@[^0-9,\.-]@', '', $value);
+            $value = str_replace(',', '.', $value);
+        }
         return round($value * 100);
     }
 }

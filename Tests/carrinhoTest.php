@@ -154,7 +154,9 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
             array(1.35  , 135),
             array(1.254 , 125),
             array(1.246 , 125),
-            array('12'  , 1200)
+            array('12'  , 1200),
+            array('12,3', 1230),
+            array('12,3,8', 1230),
         );
     }
 
