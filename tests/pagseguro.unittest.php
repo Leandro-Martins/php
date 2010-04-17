@@ -11,7 +11,7 @@ require_once 'config.php';
 require_once 'Pagseguro.php';
 require_once 'PHPUnit/Framework.php';
 
-class Pagseguro_Test extends PHPUnit_Framework_TestCase
+class PagseguroTest extends PHPUnit_Framework_TestCase
 {
     public function testClassExists()
     {
@@ -41,6 +41,10 @@ class Pagseguro_Test extends PHPUnit_Framework_TestCase
             $element = PagSeguro::$item();
             $this->assertTrue((bool) $element);
             $this->assertEquals('Pagseguro_'.ucfirst($item), get_class($element));
+
+            $element = PagSeguro::getModule($item);
+            $this->assertTrue((bool) $element);
+            $this->assertEquals('Pagseguro_'.ucfirst($item), get_class($element));
         }
     }
 
@@ -55,5 +59,5 @@ class Pagseguro_Test extends PHPUnit_Framework_TestCase
 
 // Fazendo o sistema rodar sozinho
 if (basename($_SERVER['SCRIPT_FILENAME']) === basename(__FILE__)) {
-    rodaTest('Pagseguro_Test');
+    rodaTest('PagseguroTest');
 }

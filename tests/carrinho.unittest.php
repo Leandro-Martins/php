@@ -17,7 +17,7 @@ class WorngCarrinho
     private $email_cobranca = 'fake@visie.com.br';
 }
 
-class Carrinho_Test extends PHPUnit_Framework_TestCase
+class CarrinhoTest extends PHPUnit_Framework_TestCase
 {
     public function testConstruct()
     {
@@ -59,24 +59,24 @@ class Carrinho_Test extends PHPUnit_Framework_TestCase
     {
         $data = array(
             'email_cobranca' => 'mike@visie.com.br',
-            'id' => 'formulario_pagseguro',
+            'id_formulario' => 'formulario_pagseguro',
         );
         $carrinho = new Pagseguro_Carrinho($data);
         $this->assertEquals($data['email_cobranca'], $carrinho->email_cobranca);
-        $this->assertEquals($data['id'], $carrinho->id);
+        $this->assertEquals($data['id_formulario'], $carrinho->id_formulario);
 
         $data = (object) $data;
         $carrinho = new Pagseguro_Carrinho($data);
         $this->assertEquals($data->email_cobranca, $carrinho->email_cobranca);
-        $this->assertEquals($data->id, $carrinho->id);
+        $this->assertEquals($data->id_formulario, $carrinho->id_formulario);
 
         $data_xml = new SimpleXMLElement('<data>'
               . '<email_cobranca>mike@visie.com.br</email_cobranca>'
-              . '<id>formulario_pagseguro</id>'
+              . '<id_formulario>formulario_pagseguro</id_formulario>'
               . '</data>');
         $carrinho = new Pagseguro_Carrinho($data_xml);
         $this->assertEquals($data->email_cobranca, $carrinho->email_cobranca);
-        $this->assertEquals($data->id, $carrinho->id);
+        $this->assertEquals($data->id_formulario, $carrinho->id_formulario);
     }
 
     public function testNotAcceptWorngCartArgs()
@@ -93,9 +93,51 @@ class Carrinho_Test extends PHPUnit_Framework_TestCase
         $carrinho->set('email_cobranca', $email);
         $this->assertEquals($email, $carrinho->email_cobranca);
     }
+
+    public function testSetInvalid()
+    {
+        $carrinho = new Pagseguro_Carrinho;
+        $this->setExpectedException('Exception');
+        $carrinho->set('invalido', '');
+    }
+
+    public function testSetAcceptsObjectsAndArrays()
+    {
+        $data = array(
+            'email_cobranca' => 'mike@visie.com.br',
+        );
+        $carrinho = new Pagseguro_Carrinho;
+        $carrinho->set($data);
+        $this->assertEquals($data['email_cobranca'], $carrinho->email_cobranca);
+        settype($data, 'object');
+        $carrinho = new Pagseguro_Carrinho;
+        $carrinho->set($data);
+        $this->assertEquals($data->email_cobranca, $carrinho->email_cobranca);
+    }
+
+     /**
+      * @dataProvider validargs
+      */
+     public function testSetValidArgs($key=null, $value=null, $return)
+     {
+         $carrinho = new Pagseguro_Carrinho;
+         $carrinho->set($key, $value);
+         $this->assertEquals($carrinho->{$key}, $return);
+     }
+ 
+     public function validargs()
+     {
+         return array(
+             array('email_cobranca', 'mike@visie.com.br', 'mike@visie.com.br'),
+             array('id_formulario' , 'meu_formulario'   , 'meu_formulario'   ),
+             array('tipo'          , 'CP'               , 'CP'               ),
+             array('moeda'         , 'BRL'              , 'BRL'              ),
+             array('frete'         , 2.6                , 260                ),
+         );
+     }
 }
 
 // Fazendo o sistema rodar sozinho
 if (basename($_SERVER['SCRIPT_FILENAME']) === basename(__FILE__)) {
-    rodaTest('Carrinho_Test');
+    rodaTest('CarrinhoTest');
 }

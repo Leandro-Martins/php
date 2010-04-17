@@ -3,7 +3,10 @@
 
 class Pagseguro_Carrinho
 {
-    public $id = 'form_pagseguro';
+    static private $itens_config = array('email_cobranca', 'id_formulario', 'tipo',
+                                         'moeda', 'frete');
+
+    public $id_formulario = 'form_pagseguro';
     public $email_cobranca = null;
 
     public function __construct($args=null)
@@ -11,22 +14,34 @@ class Pagseguro_Carrinho
         if ('string' === gettype($args)) {
             $this->email_cobranca = $args;
         } elseif (is_object($args) OR is_array($args)) {
-            settype($args, 'array');
-            $itens_config = array('email_cobranca', 'id');
-            foreach ($itens_config as $item) {
-                if (isset($args[$item])) {
-                    $this->set($item, $args[$item]);
-                }
-            }
+            $this->set($args);
         }
     }
 
     public function set($key, $value=null)
     {
-        $valids = array('email_cobranca', 'id');
-        if (in_array($key, $valids)) {
-            settype($value, 'string');
-            $this->$key = $value;
+        if (is_object($key) OR is_array($key)) {
+            settype($key, 'array');
+            foreach (self::$itens_config as $item) {
+                if (isset($key[$item])) {
+                    $this->set($item, $key[$item]);
+                }
+            }
+            return true;
         }
+        if (in_array($key, self::$itens_config)) {
+            settype($value, 'string');
+            if ($key=='frete') {
+                $value = $this->convert_to_number($value);
+            }
+            $this->$key = $value;
+        } else {
+            throw new Exception('Invalid argument key: '.$key);
+        }
+    }
+
+    public function convert_to_number($value)
+    {
+        return $value * 100;
     }
 }
