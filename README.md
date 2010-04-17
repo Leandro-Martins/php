@@ -80,3 +80,12 @@ Caso você prefira definir os parâmetros após criar o objeto de carrinho, voc�
     $pagseguro = new Pagseguro;
     $carrinho = $pagseguro->carrinho;
     $carrinho->set('email_cobranca', 'mike@visie.com.br');
+
+Você pode setar vários valores de uma só vez passando um array ou um objeto para o comando set.
+
+    $carrinho = Pagseguro::carrinho(array(
+        'email_cobranca' => 'mike@visie.com.br',
+        'tipo' => 'CBR',
+    ));
+
+
