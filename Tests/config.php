@@ -29,7 +29,7 @@ function runTest()
 
 if (basename($_SERVER['SCRIPT_FILENAME']) === basename(__FILE__)) {
     foreach(array('pagseguro', 'carrinho') as $test) {
-        include_once $test.'.unittest.php';
+        include_once $test.'Test.php';
         rodaTest(ucfirst($test).'Test', false);
     }
     runTest();
