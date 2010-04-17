@@ -1,5 +1,6 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4 foldmethod=marker: */
+// @codeCoverageIgnoreStart
 require_once('PHPUnit/Framework.php');
 require_once('PHPUnit/TextUI/ResultPrinter.php');
 
@@ -34,3 +35,4 @@ if (basename($_SERVER['SCRIPT_FILENAME']) === basename(__FILE__)) {
     }
     runTest();
 }
+// @codeCoverageIgnoreEnd
