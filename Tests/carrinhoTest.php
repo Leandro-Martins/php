@@ -71,9 +71,9 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($data->id_formulario, $carrinho->id_formulario);
 
         $data_xml = new SimpleXMLElement('<data>'
-              . '<email_cobranca>mike@visie.com.br</email_cobranca>'
-              . '<id_formulario>formulario_pagseguro</id_formulario>'
-              . '</data>');
+            . '<email_cobranca>mike@visie.com.br</email_cobranca>'
+            . '<id_formulario>formulario_pagseguro</id_formulario>'
+            . '</data>');
         $carrinho = new Pagseguro_Carrinho($data_xml);
         $this->assertEquals($data->email_cobranca, $carrinho->email_cobranca);
         $this->assertEquals($data->id_formulario, $carrinho->id_formulario);
@@ -115,26 +115,66 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($data->email_cobranca, $carrinho->email_cobranca);
     }
 
-     /**
-      * @dataProvider validargs
-      */
-     public function testSetValidArgs($key=null, $value=null, $return)
-     {
-         $carrinho = new Pagseguro_Carrinho;
-         $carrinho->set($key, $value);
-         $this->assertEquals($carrinho->{$key}, $return);
-     }
- 
-     public function validargs()
-     {
-         return array(
-             array('email_cobranca', 'mike@visie.com.br', 'mike@visie.com.br'),
-             array('id_formulario' , 'meu_formulario'   , 'meu_formulario'   ),
-             array('tipo'          , 'CP'               , 'CP'               ),
-             array('moeda'         , 'BRL'              , 'BRL'              ),
-             array('frete'         , 2.6                , 260                ),
-         );
-     }
+    /**
+     * @dataProvider valid_args
+     */
+    public function testSetValidArgs($key=null, $value=null, $return)
+    {
+        $carrinho = new Pagseguro_Carrinho;
+        $carrinho->set($key, $value);
+        $this->assertEquals($carrinho->{$key}, $return);
+    }
+
+    public function valid_args()
+    {
+        return array(
+            array('email_cobranca', 'mike@visie.com.br', 'mike@visie.com.br'),
+            array('id_formulario' , 'meu_formulario'   , 'meu_formulario'   ),
+            array('tipo'          , 'CP'               , 'CP'               ),
+            array('moeda'         , 'BRL'              , 'BRL'              ),
+            array('frete'         , 2.6                , 260                ),
+        );
+    }
+
+    /**
+     * @dataProvider numbers
+     */
+    public function testConvertToNumber($entrada, $saida)
+    {
+        $carrinho = new Pagseguro_Carrinho;
+        $this->assertEquals($saida, $carrinho->convert_to_number($entrada));
+    }
+
+    public function numbers()
+    {
+        return array(
+            array(1     , 100),
+            array(12    , 1200),
+            array(3.4   , 340),
+            array(1.35  , 135),
+            array(1.254 , 125),
+            array(1.246 , 125),
+            array('12'  , 1200)
+        );
+    }
+
+    /**
+     * @dataProvider invalid_numbers
+     */
+    public function testInvalidValuesForConvertToNumbers($value)
+    {
+        $carrinho = new Pagseguro_Carrinho;
+        $this->setExpectedException('Exception');
+        $carrinho->convert_to_number($value);
+    }
+
+    public function invalid_numbers()
+    {
+        return array(
+            array(array()),
+            array(new stdClass),
+        );
+    }
 }
 
 // Fazendo o sistema rodar sozinho

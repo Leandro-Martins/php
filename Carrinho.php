@@ -42,6 +42,9 @@ class Pagseguro_Carrinho
 
     public function convert_to_number($value)
     {
-        return $value * 100;
+        if (!is_scalar($value)) {
+            throw new Exception('Invalid argument to convert: '.gettype($value));
+        }
+        return round($value * 100);
     }
 }
