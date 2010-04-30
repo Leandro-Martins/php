@@ -8,6 +8,7 @@ class Pagseguro_Carrinho
 
     public $id_formulario = 'form_pagseguro';
     public $email_cobranca = null;
+    public $produtos = array();
 
     public function __construct($args=null)
     {
@@ -49,6 +50,15 @@ class Pagseguro_Carrinho
             $value = preg_replace('@[^0-9,\.-]@', '', $value);
             $value = str_replace(',', '.', $value);
         }
-        return round($value * 100);
+        $return = round($value * 100);
+        return $return;
+    }
+
+    public function produto($produto)
+    {
+        settype($produto, 'array');
+        settype($produto, 'object');
+        $produto->preco = $this->convert_to_number($produto->preco);
+        $this->produtos[] = $produto;
     }
 }

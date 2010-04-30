@@ -177,6 +177,29 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
             array(new stdClass),
         );
     }
+    
+    /**
+     * @dataProvider validProducts
+     */
+    public function testSetValidProducts($produto, $preco)
+    {
+        $carrinho = Pagseguro::carrinho('mike@visie.com.br');
+        $carrinho->produto($produto);
+        settype($produto, 'array');
+        $this->assertEquals($carrinho->produtos[0]->codigo, $produto['codigo']);
+        $this->assertEquals($carrinho->produtos[0]->titulo, $produto['titulo']);
+        $this->assertEquals($carrinho->produtos[0]->preco, $preco);
+        $this->assertEquals($carrinho->produtos[0]->quantidade, $produto['quantidade']);
+    }
+
+    public function validProducts()
+    {
+        return array(
+            array(array( 'codigo' => '0001', 'titulo' => 'Veu de noiva', 'preco' => 89.9, 'quantidade' => 1), 8990),
+            array((object) array( 'codigo' => '0001', 'titulo' => 'Veu de noiva', 'preco' => 85.9, 'quantidade' => 1), 8590),
+            array(new SimpleXMLElement('<data><codigo>201</codigo><titulo>Amigos para sempre</titulo><preco>2,90</preco><quantidade>3</quantidade></data>'), 290)
+        );
+    }
 }
 
 // Fazendo o sistema rodar sozinho
