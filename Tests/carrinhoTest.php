@@ -142,7 +142,7 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
     public function testConvertToNumber($entrada, $saida)
     {
         $carrinho = new Pagseguro_Carrinho;
-        $this->assertEquals($saida, $carrinho->convert_to_number($entrada));
+        $this->assertEquals($saida, $carrinho->numero($entrada));
     }
 
     public function numbers()
@@ -167,7 +167,7 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
     {
         $carrinho = new Pagseguro_Carrinho;
         $this->setExpectedException('Exception');
-        $carrinho->convert_to_number($value);
+        $carrinho->numero($value);
     }
 
     public function invalid_numbers()
@@ -196,8 +196,30 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(array( 'codigo' => '0001', 'titulo' => 'Veu de noiva', 'preco' => 89.9, 'quantidade' => 1), 8990),
-            array((object) array( 'codigo' => '0001', 'titulo' => 'Veu de noiva', 'preco' => 85.9, 'quantidade' => 1), 8590),
+            array((object) array( 'codigo' => '0001', 'titulo' => 'Veu de noiva', 'preco' => '85,9', 'quantidade' => 1), 8590),
             array(new SimpleXMLElement('<data><codigo>201</codigo><titulo>Amigos para sempre</titulo><preco>2,90</preco><quantidade>3</quantidade></data>'), 290)
+        );
+    }
+
+    /**
+     * @dataProvider invalidProdutcs
+     * @expectedException Exception
+     */
+    public function testInvalidProducts($produto)
+    {
+        $carrinho = new Pagseguro_Carrinho;
+        $carrinho->produto($produto);
+    }
+
+    public function invalidProdutcs()
+    {
+        // Produtos obrigatorios
+        return array(
+            array(array('codigo' => '1', 'titulo' => 'Meu título', 'preco' => '10,9')),
+            array(array('codigo' => '1', 'titulo' => 'Meu título', 'quantidade' => '2')),
+            array(array('codigo' => '1', 'preco' => '10,9', 'quantidade' => '2')),
+            array(array('titulo' => 'Meu título', 'preco' => '10,9', 'quantidade' => '2')),
+            // array(array('codigo' => '1', 'titulo' => 'Meu título', 'preco' => '10,9', 'quantidade' => '2'))
         );
     }
 }

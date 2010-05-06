@@ -33,7 +33,7 @@ class Pagseguro_Carrinho
         if (in_array($key, self::$itens_config)) {
             settype($value, 'string');
             if ($key=='frete') {
-                $value = $this->convert_to_number($value);
+                $value = $this->numero($value);
             }
             $this->$key = $value;
         } else {
@@ -41,7 +41,7 @@ class Pagseguro_Carrinho
         }
     }
 
-    public function convert_to_number($value)
+    public function numero($value)
     {
         if (!is_scalar($value)) {
             throw new Exception('Invalid argument to convert: '.gettype($value));
@@ -57,8 +57,15 @@ class Pagseguro_Carrinho
     public function produto($produto)
     {
         settype($produto, 'array');
+        $chaves       = array_keys($produto);
+        $obrigatorios = array('codigo', 'titulo', 'quantidade', 'preco');
+        foreach ($obrigatorios as $item) {
+            if (!in_array($item, $chaves)) {
+                throw new Exception('This product does not have the obrigatory key: '.$item);
+            }
+        }
         settype($produto, 'object');
-        $produto->preco = $this->convert_to_number($produto->preco);
+        $produto->preco   = $this->numero($produto->preco);
         $this->produtos[] = $produto;
     }
 }
