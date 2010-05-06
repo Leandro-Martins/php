@@ -213,7 +213,7 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
 
     public function invalidProdutcs()
     {
-        // Produtos obrigatorios
+        // keys obrigatorias
         return array(
             array(array('codigo' => '1', 'titulo' => 'Meu título', 'preco' => '10,9')),
             array(array('codigo' => '1', 'titulo' => 'Meu título', 'quantidade' => '2')),
