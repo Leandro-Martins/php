@@ -66,6 +66,9 @@ class Pagseguro_Carrinho
         }
         settype($produto, 'object');
         $produto->preco   = $this->numero($produto->preco);
+        if (isset($produto->frete)) {
+            $produto->frete   = $this->numero($produto->frete);
+        }
         $this->produtos[] = $produto;
     }
 }

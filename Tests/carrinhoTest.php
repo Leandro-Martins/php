@@ -197,7 +197,9 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
         return array(
             array(array( 'codigo' => '0001', 'titulo' => 'Veu de noiva', 'preco' => 89.9, 'quantidade' => 1), 8990),
             array((object) array( 'codigo' => '0001', 'titulo' => 'Veu de noiva', 'preco' => '85,9', 'quantidade' => 1), 8590),
-            array(new SimpleXMLElement('<data><codigo>201</codigo><titulo>Amigos para sempre</titulo><preco>2,90</preco><quantidade>3</quantidade></data>'), 290)
+            array(new SimpleXMLElement('<data><codigo>201</codigo><titulo>Amigos para sempre</titulo><preco>2,90</preco><quantidade>3</quantidade></data>'), 290),
+            array(new SimpleXMLElement('<data><codigo>2</codigo><titulo>o Rappa</titulo><preco>2.3</preco><quantidade>12</quantidade><frete>10,99</frete></data>'), 230, 1099),
+            array(array( 'codigo' => '0032', 'titulo' => 'Veu de noiva', 'preco' => '84,9', 'quantidade' => 1, 'frete' => 20), 8490, 2000),
         );
     }
 
@@ -221,6 +223,21 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
             array(array('titulo' => 'Meu título', 'preco' => '10,9', 'quantidade' => '2')),
             // array(array('codigo' => '1', 'titulo' => 'Meu título', 'preco' => '10,9', 'quantidade' => '2'))
         );
+    }
+
+    /**
+     * @dataProvider validProducts
+     */
+    public function testProdutoFrete($produto, $preco, $frete=null)
+    {
+        $carrinho = Pagseguro::carrinho('mike@visie.com.br');
+        $carrinho->produto($produto);
+        settype($produto, 'array');
+        if ($frete===null) {
+            $this->assertFalse(isset($carrinho->produtos[0]->frete));
+        } else {
+            $this->assertEquals($carrinho->produtos[0]->frete, $frete);
+        }
     }
 }
 
