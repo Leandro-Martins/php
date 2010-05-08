@@ -200,6 +200,7 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
             array(new SimpleXMLElement('<data><codigo>201</codigo><titulo>Amigos para sempre</titulo><preco>2,90</preco><quantidade>3</quantidade></data>'), 290),
             array(new SimpleXMLElement('<data><codigo>2</codigo><titulo>o Rappa</titulo><preco>2.3</preco><quantidade>12</quantidade><frete>10,99</frete></data>'), 230, 1099),
             array(array( 'codigo' => '0032', 'titulo' => 'Veu de noiva', 'preco' => '84,9', 'quantidade' => 1, 'frete' => 20), 8490, 2000),
+            array(array( 'codigo' => '002', 'titulo' => 'Caneta', 'preco' => '4', 'quantidade' => 3, 'frete' => '3,20', 'peso' => '200'), 400, 320),
         );
     }
 
@@ -228,7 +229,7 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider validProducts
      */
-    public function testProdutoFrete($produto, $preco, $frete=null)
+    public function testProdutoFretePeso($produto, $preco, $frete=null)
     {
         $carrinho = Pagseguro::carrinho('mike@visie.com.br');
         $carrinho->produto($produto);
@@ -237,6 +238,11 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
             $this->assertFalse(isset($carrinho->produtos[0]->frete));
         } else {
             $this->assertEquals($carrinho->produtos[0]->frete, $frete);
+        }
+        if (isset($produto['peso'])) {
+            $this->assertEquals($carrinho->produtos[0]->peso, $produto['peso']);
+        } else {
+            $this->assertFalse(isset($carrinho->produtos[0]->peso));
         }
     }
 }
