@@ -181,26 +181,26 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider validProducts
      */
-    public function testSetValidProducts($produto, $preco)
+    public function testSetValidProducts($produto, $valor)
     {
         $carrinho = Pagseguro::carrinho('mike@visie.com.br');
         $carrinho->produto($produto);
         settype($produto, 'array');
-        $this->assertEquals($carrinho->produtos[0]->codigo, $produto['codigo']);
-        $this->assertEquals($carrinho->produtos[0]->titulo, $produto['titulo']);
-        $this->assertEquals($carrinho->produtos[0]->preco, $preco);
-        $this->assertEquals($carrinho->produtos[0]->quantidade, $produto['quantidade']);
+        $this->assertEquals($carrinho->produtos[0]->id, $produto['id']);
+        $this->assertEquals($carrinho->produtos[0]->descr, $produto['descr']);
+        $this->assertEquals($carrinho->produtos[0]->valor, $valor);
+        $this->assertEquals($carrinho->produtos[0]->quant, $produto['quant']);
     }
 
     public function validProducts()
     {
         return array(
-            array(array( 'codigo' => '0001', 'titulo' => 'Veu de noiva', 'preco' => 89.9, 'quantidade' => 1), 8990),
-            array((object) array( 'codigo' => '0001', 'titulo' => 'Veu de noiva', 'preco' => '85,9', 'quantidade' => 1), 8590),
-            array(new SimpleXMLElement('<data><codigo>201</codigo><titulo>Amigos para sempre</titulo><preco>2,90</preco><quantidade>3</quantidade></data>'), 290),
-            array(new SimpleXMLElement('<data><codigo>2</codigo><titulo>o Rappa</titulo><preco>2.3</preco><quantidade>12</quantidade><frete>10,99</frete></data>'), 230, 1099),
-            array(array( 'codigo' => '0032', 'titulo' => 'Veu de noiva', 'preco' => '84,9', 'quantidade' => 1, 'frete' => 20), 8490, 2000),
-            array(array( 'codigo' => '002', 'titulo' => 'Caneta', 'preco' => '4', 'quantidade' => 3, 'frete' => '3,20', 'peso' => '200'), 400, 320),
+            array(array( 'id' => '0001', 'descr' => 'Veu de noiva', 'valor' => 89.9, 'quant' => 1), 8990),
+            array((object) array( 'id' => '0001', 'descr' => 'Veu de noiva', 'valor' => '85,9', 'quant' => 1), 8590),
+            array(new SimpleXMLElement('<data><id>201</id><descr>Amigos para sempre</descr><valor>2,90</valor><quant>3</quant></data>'), 290),
+            array(new SimpleXMLElement('<data><id>2</id><descr>o Rappa</descr><valor>2.3</valor><quant>12</quant><frete>10,99</frete></data>'), 230, 1099),
+            array(array( 'id' => '0032', 'descr' => 'Veu de noiva', 'valor' => '84,9', 'quant' => 1, 'frete' => 20), 8490, 2000),
+            array(array( 'id' => '002', 'descr' => 'Caneta', 'valor' => '4', 'quant' => 3, 'frete' => '3,20', 'peso' => '200'), 400, 320),
         );
     }
 
@@ -218,18 +218,18 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
     {
         // keys obrigatorias
         return array(
-            array(array('codigo' => '1', 'titulo' => 'Meu título', 'preco' => '10,9')),
-            array(array('codigo' => '1', 'titulo' => 'Meu título', 'quantidade' => '2')),
-            array(array('codigo' => '1', 'preco' => '10,9', 'quantidade' => '2')),
-            array(array('titulo' => 'Meu título', 'preco' => '10,9', 'quantidade' => '2')),
-            // array(array('codigo' => '1', 'titulo' => 'Meu título', 'preco' => '10,9', 'quantidade' => '2'))
+            array(array('id' => '1', 'descr' => 'Meu título', 'valor' => '10,9')),
+            array(array('id' => '1', 'descr' => 'Meu título', 'quant' => '2')),
+            array(array('id' => '1', 'valor' => '10,9', 'quant' => '2')),
+            array(array('descr' => 'Meu título', 'valor' => '10,9', 'quant' => '2')),
+            // array(array('id' => '1', 'descr' => 'Meu título', 'valor' => '10,9', 'quant' => '2'))
         );
     }
 
     /**
      * @dataProvider validProducts
      */
-    public function testProdutoFretePeso($produto, $preco, $frete=null)
+    public function testProdutoFretePeso($produto, $valor, $frete=null)
     {
         $carrinho = Pagseguro::carrinho('mike@visie.com.br');
         $carrinho->produto($produto);
@@ -244,6 +244,21 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
         } else {
             $this->assertFalse(isset($carrinho->produtos[0]->peso));
         }
+    }
+
+    public function testIgnorandoNameInvalido()
+    {
+        $carrinho = Pagseguro::Carrinho('mike@visie.com.br');
+        $carrinho->produto(array(
+            'id' => '002', 
+            'descr' => 'Arame Farpado', 
+            'valor'  => .4, 
+            'quant' => 3, 
+            'frete' => 3, 
+            'peso' => '200', 
+            'ignore' => 'valor invalido'
+        ));
+        $this->assertFalse(isset($carrinho->produtos[0]->ignore));
     }
 }
 

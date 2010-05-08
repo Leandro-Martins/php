@@ -5,6 +5,8 @@ class Pagseguro_Carrinho
 {
     static private $itens_config = array('email_cobranca', 'id_formulario', 'tipo',
                                          'moeda', 'frete');
+    static private $itens_produto = array('id', 'descr', 'quant', 'valor', 'frete',
+                                          'peso');
 
     public $id_formulario = 'form_pagseguro';
     public $email_cobranca = null;
@@ -58,17 +60,23 @@ class Pagseguro_Carrinho
     {
         settype($produto, 'array');
         $chaves       = array_keys($produto);
-        $obrigatorios = array('codigo', 'titulo', 'quantidade', 'preco');
+        $obrigatorios = array('id', 'descr', 'quant', 'valor');
         foreach ($obrigatorios as $item) {
             if (!in_array($item, $chaves)) {
                 throw new Exception('This product does not have the obrigatory key: '.$item);
             }
         }
         settype($produto, 'object');
-        $produto->preco   = $this->numero($produto->preco);
+        $produto->valor = $this->numero($produto->valor);
         if (isset($produto->frete)) {
             $produto->frete   = $this->numero($produto->frete);
         }
-        $this->produtos[] = $produto;
+        $p = array();
+        foreach ($produto as $chave => $valor) {
+            if (in_array($chave, self::$itens_produto)) {
+                $p[$chave] = $valor;
+            }
+        }
+        $this->produtos[] = (object) $p;
     }
 }
