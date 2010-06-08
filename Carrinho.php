@@ -31,14 +31,14 @@ class Pagseguro_Carrinho
     {
         if ('string' === gettype($args)) {
             $this->email_cobranca = $args;
-        } elseif (is_object($args) OR is_array($args)) {
+        } elseif (is_object($args) || is_array($args)) {
             $this->set($args);
         }
     }
 
     public function set($key, $value=null)
     {
-        if (is_object($key) OR is_array($key)) {
+        if (is_object($key) || is_array($key)) {
             settype($key, 'array');
             foreach (self::$_itens_config as $item) {
                 if (isset($key[$item])) {
@@ -74,7 +74,7 @@ class Pagseguro_Carrinho
 
     public function produto($produto)
     {
-        if ('array' === gettype($produto) AND isset($produto[0])) {
+        if ('array' === gettype($produto) && isset($produto[0])) {
             foreach ($produto as $item) {
                 $this->produto($item);
             }
@@ -83,7 +83,7 @@ class Pagseguro_Carrinho
         settype($produto, 'array');
         foreach (self::$_substitutos as $chave=>$substs) {
             foreach ($substs as $item) {
-                if (isset($produto[$item]) AND $produto[$item]) {
+                if (isset($produto[$item]) && $produto[$item]) {
                     $valor = $produto[$item];
                     unset($produto[$item]);
                     $produto[$chave] = $valor;
@@ -113,9 +113,9 @@ class Pagseguro_Carrinho
 
     public function cliente($key, $value=null)
     {
-        if (is_array($key)) {
+        if (is_array($key) || is_object($key)) {
             foreach ($key as $k=>$v) {
-                $this->cliente($k, $v);
+                $this->cliente((string) $k, (string) $v);
             }
             return;
         }
