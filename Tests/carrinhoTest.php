@@ -177,7 +177,7 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
             array(new stdClass),
         );
     }
-    
+
     /**
      * @dataProvider validProducts
      */
@@ -250,15 +250,83 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
     {
         $carrinho = Pagseguro::Carrinho('mike@visie.com.br');
         $carrinho->produto(array(
-            'id' => '002', 
-            'descr' => 'Arame Farpado', 
-            'valor'  => .4, 
-            'quant' => 3, 
-            'frete' => 3, 
-            'peso' => '200', 
+            'id' => '002',
+            'descr' => 'Arame Farpado',
+            'valor'  => .4,
+            'quant' => 3,
+            'frete' => 3,
+            'peso' => '200',
             'ignore' => 'valor invalido'
         ));
         $this->assertFalse(isset($carrinho->produtos[0]->ignore));
+    }
+
+    public function testSobrescrevendoInformacoesDescricao()
+    {
+        $chaves   = array('descricao', 'description', 'desc', 'descr');
+        foreach ($chaves as $chave) {
+            $carrinho = Pagseguro::Carrinho('mike@visie.com.br');
+            $id = uniqid();
+            $carrinho->produto(array(
+                    'id'    => '003',
+                    $chave  => $id.' Assinatura de jornal',
+                    'valor' => 210,
+                    'quant' => 1,
+                ));
+            $this->assertEquals(1, count($carrinho->produtos));
+            $this->assertEquals($id.' Assinatura de jornal', $carrinho->produtos[0]->descr);
+        }
+    }
+
+    public function testSobrescrevendoInformacoesValor()
+    {
+        $chaves   = array('price', 'preco', 'valor');
+        foreach ($chaves as $chave) {
+            $carrinho = Pagseguro::Carrinho('mike@visie.com.br');
+            $valor = rand(1,100);
+            $carrinho->produto(array(
+                    'id'    => '003',
+                    'descr' => 'Assinatura de jornal',
+                    $chave  => $valor,
+                    'quant' => 1,
+                ));
+            $this->assertEquals(1, count($carrinho->produtos));
+            $this->assertEquals($valor*100, $carrinho->produtos[0]->valor);
+        }
+    }
+
+    public function testSobrescrevendoInformacoesQuant()
+    {
+        $chaves   = array('quantity', 'qty', 'qtd', 'quantidade', 'quant');
+        foreach ($chaves as $chave) {
+            $carrinho = Pagseguro::Carrinho('mike@visie.com.br');
+            $quant = rand(1,100);
+            $carrinho->produto(array(
+                    'id'    => '003',
+                    'descr' => 'Assinatura de jornal',
+                    'valor' => 123,
+                    $chave  => $quant,
+                ));
+            $this->assertEquals(1, count($carrinho->produtos));
+            $this->assertEquals($quant, $carrinho->produtos[0]->quant);
+        }
+    }
+
+    public function testSobrescrevendoInformacoesID()
+    {
+        $chaves   = array('code', 'codigo', 'SKU', 'sku', 'uid', 'slug', 'ID', 'Id', 'id');
+        foreach ($chaves as $chave) {
+            $carrinho = Pagseguro::Carrinho('mike@visie.com.br');
+            $id = uniqid();
+            $carrinho->produto(array(
+                    $chave  => $id,
+                    'descr' => 'Assinatura de jornal',
+                    'valor' => 123,
+                    'quant' => 1,
+                ));
+            $this->assertEquals(1, count($carrinho->produtos));
+            $this->assertEquals($id, $carrinho->produtos[0]->id);
+        }
     }
 }
 

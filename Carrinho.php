@@ -3,10 +3,12 @@
 
 class Pagseguro_Carrinho
 {
-    static private $itens_config = array('email_cobranca', 'id_formulario', 'tipo',
-                                         'moeda', 'frete');
-    static private $itens_produto = array('id', 'descr', 'quant', 'valor', 'frete',
-                                          'peso');
+    static private $_itens_config  = array('email_cobranca', 'id_formulario',
+                                          'tipo', 'moeda', 'frete');
+    static private $_itens_produto = array('id', 'descr', 'quant', 'valor',
+                                          'frete', 'peso');
+    static private $_itens_produtos_obrigatorios = array('id', 'descr', 'quant',
+                                                         'valor');
 
     public $id_formulario = 'form_pagseguro';
     public $email_cobranca = null;
@@ -25,14 +27,14 @@ class Pagseguro_Carrinho
     {
         if (is_object($key) OR is_array($key)) {
             settype($key, 'array');
-            foreach (self::$itens_config as $item) {
+            foreach (self::$_itens_config as $item) {
                 if (isset($key[$item])) {
                     $this->set($item, $key[$item]);
                 }
             }
             return true;
         }
-        if (in_array($key, self::$itens_config)) {
+        if (in_array($key, self::$_itens_config)) {
             settype($value, 'string');
             if ($key=='frete') {
                 $value = $this->numero($value);
@@ -46,7 +48,8 @@ class Pagseguro_Carrinho
     public function numero($value)
     {
         if (!is_scalar($value)) {
-            throw new Exception('Invalid argument to convert: '.gettype($value));
+            throw new Exception('Invalid argument to convert: '
+                               .gettype($value));
         }
         if ('string' === gettype($value)) {
             $value = preg_replace('@[^0-9,\.-]@', '', $value);
@@ -59,11 +62,25 @@ class Pagseguro_Carrinho
     public function produto($produto)
     {
         settype($produto, 'array');
+        $substitutos  = array(
+            'id'    => array('code', 'codigo', 'SKU', 'sku', 'uid', 'slug',
+                             'ID', 'Id', 'id'),
+            'descr' => array('descricao', 'description', 'desc', 'descr'),
+            'valor' => array('price', 'preco', 'valor'),
+            'quant' => array('quantity', 'qty', 'qtd', 'quantidade', 'quant'),
+        );
+        foreach ($substitutos as $chave=>$substs) {
+            foreach ($substs as $item) {
+                if (isset($produto[$item]) AND $produto[$item]) {
+                    $produto[$chave] = $produto[$item];
+                }
+            }
+        }
         $chaves       = array_keys($produto);
-        $obrigatorios = array('id', 'descr', 'quant', 'valor');
-        foreach ($obrigatorios as $item) {
+        foreach (self::$_itens_produtos_obrigatorios as $item) {
             if (!in_array($item, $chaves)) {
-                throw new Exception('This product does not have the obrigatory key: '.$item);
+                throw new Exception('This product does not have the obrigatory '
+                                   .'key: '.$item);
             }
         }
         settype($produto, 'object');
@@ -73,7 +90,7 @@ class Pagseguro_Carrinho
         }
         $p = array();
         foreach ($produto as $chave => $valor) {
-            if (in_array($chave, self::$itens_produto)) {
+            if (in_array($chave, self::$_itens_produto)) {
                 $p[$chave] = $valor;
             }
         }
