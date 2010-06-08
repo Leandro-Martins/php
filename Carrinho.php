@@ -80,7 +80,7 @@ class Pagseguro_Carrinho
                 }
             }
         }
-        $chaves       = array_keys($produto);
+        $chaves = array_keys($produto);
         foreach (self::$_itens_produtos_obrigatorios as $item) {
             if (!in_array($item, $chaves)) {
                 throw new Exception('This product does not have the obrigatory '
