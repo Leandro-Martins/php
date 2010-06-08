@@ -121,7 +121,6 @@ class Pagseguro_Carrinho
      *
      * @param string|array|object $key   Chave do campo que deseja adicionar
      * @param string|null         $value Valor da Chave
-     * @return void
      */
     public function cliente($key, $value=null)
     {
