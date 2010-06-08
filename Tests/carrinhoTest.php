@@ -354,6 +354,8 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
             'end'  => 'R Bela Vista',
         ));
         $this->assertEquals($carrinho->cliente, array('nome' => 'Rafael', 'cep' => '12345678', 'end'  => 'R Bela Vista'));
+        $carrinho->cliente(new SimpleXMLElement('<data><bairro>Centro</bairro></data>'));
+        $this->assertEquals($carrinho->cliente, array('nome' => 'Rafael', 'cep' => '12345678', 'end'  => 'R Bela Vista', 'bairro' => 'Centro'));
     }
 
     function testInsereDadosInvalidos()
