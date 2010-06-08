@@ -364,6 +364,13 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
         $carrinho->cliente('invalido', 'Michael');
         $this->assertEquals($carrinho->cliente, array());
     }
+
+    function testInsereDadosInvalidos()
+    {
+        $carrinho=Pagseguro::Carrinho('mike@visie.com.br');
+        $carrinho->cliente('invalido', 'Michael');
+        $this->assertEquals($carrinho->cliente, array());
+    }
 }
 
 // Fazendo o sistema rodar sozinho
