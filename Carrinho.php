@@ -63,16 +63,20 @@ class Pagseguro_Carrinho
     {
         settype($produto, 'array');
         $substitutos  = array(
-            'id'    => array('code', 'codigo', 'SKU', 'sku', 'uid', 'slug',
-                             'ID', 'Id', 'id'),
-            'descr' => array('descricao', 'description', 'desc', 'descr'),
-            'valor' => array('price', 'preco', 'valor'),
-            'quant' => array('quantity', 'qty', 'qtd', 'quantidade', 'quant'),
+            'id'    => array('id', 'ID', 'Id', 'code', 'codigo',
+                             'SKU', 'sku', 'uid', 'uniqid', 'slug'),
+            'descr' => array('descr', 'desc', 'descricao', 'description'),
+            'valor' => array('valor', 'preco', 'price'),
+            'quant' => array('quant', 'quantidade', 'qtd', 'qty', 'quantity'),
+            'frete' => array('frete', 'freight'),
+            'peso'  => array('peso', 'weight'),
         );
         foreach ($substitutos as $chave=>$substs) {
             foreach ($substs as $item) {
                 if (isset($produto[$item]) AND $produto[$item]) {
-                    $produto[$chave] = $produto[$item];
+                    $valor = $produto[$item];
+                    unset($produto[$item]);
+                    $produto[$chave] = $valor;
                 }
             }
         }
