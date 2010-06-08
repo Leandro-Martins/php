@@ -70,6 +70,12 @@ class Pagseguro_Carrinho
 
     public function produto($produto)
     {
+        if ('array' === gettype($produto) AND isset($produto[0])) {
+            foreach ($produto as $item) {
+                $this->produto($item);
+            }
+            return;
+        }
         settype($produto, 'array');
         foreach (self::$_substitutos as $chave=>$substs) {
             foreach ($substs as $item) {

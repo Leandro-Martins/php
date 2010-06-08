@@ -328,6 +328,19 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
             $this->assertEquals($id, $carrinho->produtos[0]->id);
         }
     }
+
+    public function testMultiplosProdutos()
+    {
+        $produtos  = array();
+        $_produtos = $this->validProducts();
+        foreach ($_produtos as $item) {
+            $produtos[] = $item[0];
+        }
+        $carrinho = Pagseguro::carrinho('mike@visie.com.br');
+        $carrinho->produto($produtos);
+        $total = count($produtos);
+        $this->assertEquals($total, count($carrinho->produtos));
+    }
 }
 
 // Fazendo o sistema rodar sozinho
