@@ -9,6 +9,15 @@ class Pagseguro_Carrinho
                                           'frete', 'peso');
     static private $_itens_produtos_obrigatorios = array('id', 'descr', 'quant',
                                                          'valor');
+    static private $_substitutos = array(
+            'id'    => array('id', 'ID', 'Id', 'code', 'codigo',
+                             'SKU', 'sku', 'uid', 'uniqid', 'slug'),
+            'descr' => array('descr', 'desc', 'descricao', 'description'),
+            'valor' => array('valor', 'preco', 'price'),
+            'quant' => array('quant', 'quantidade', 'qtd', 'qty', 'quantity'),
+            'frete' => array('frete', 'freight'),
+            'peso'  => array('peso', 'weight'),
+        );
 
     public $id_formulario = 'form_pagseguro';
     public $email_cobranca = null;
@@ -62,16 +71,7 @@ class Pagseguro_Carrinho
     public function produto($produto)
     {
         settype($produto, 'array');
-        $substitutos  = array(
-            'id'    => array('id', 'ID', 'Id', 'code', 'codigo',
-                             'SKU', 'sku', 'uid', 'uniqid', 'slug'),
-            'descr' => array('descr', 'desc', 'descricao', 'description'),
-            'valor' => array('valor', 'preco', 'price'),
-            'quant' => array('quant', 'quantidade', 'qtd', 'qty', 'quantity'),
-            'frete' => array('frete', 'freight'),
-            'peso'  => array('peso', 'weight'),
-        );
-        foreach ($substitutos as $chave=>$substs) {
+        foreach (self::$_substitutos as $chave=>$substs) {
             foreach ($substs as $item) {
                 if (isset($produto[$item]) AND $produto[$item]) {
                     $valor = $produto[$item];
