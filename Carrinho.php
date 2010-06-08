@@ -72,6 +72,11 @@ class Pagseguro_Carrinho
         return $return;
     }
 
+    /**
+     * Adiciona um produto ao carrinho
+     *
+     * @param array|object $produto O produto em si
+     */
     public function produto($produto)
     {
         if ('array' === gettype($produto) && isset($produto[0])) {
