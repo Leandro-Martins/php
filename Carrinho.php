@@ -22,6 +22,7 @@ class Pagseguro_Carrinho
     public $id_formulario = 'form_pagseguro';
     public $email_cobranca = null;
     public $produtos = array();
+    public $cliente  = array();
 
     public function __construct($args=null)
     {
@@ -105,5 +106,16 @@ class Pagseguro_Carrinho
             }
         }
         $this->produtos[] = (object) $p;
+    }
+
+    public function cliente($key, $value=null)
+    {
+        if (is_array($key)) {
+            foreach ($key as $k=>$v) {
+                $this->cliente($k, $v);
+            }
+            return;
+        }
+        $this->cliente[$key] = $value;
     }
 }

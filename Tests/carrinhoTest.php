@@ -341,6 +341,20 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
         $total = count($produtos);
         $this->assertEquals($total, count($carrinho->produtos));
     }
+
+    function testInsereCliente ()
+    {
+        $carrinho=Pagseguro::Carrinho('mike@visie.com.br');
+        $carrinho->cliente('nome', 'Michael');
+        $this->assertEquals($carrinho->cliente, array ('nome' => 'Michael'));
+        $carrinho->cliente('cep', '12345678');
+        $this->assertEquals($carrinho->cliente, array ('nome' => 'Michael', 'cep' => '12345678'));
+        $carrinho->cliente(array(
+            'nome' => 'Rafael',
+            'end'  => 'R Bela Vista',
+        ));
+        $this->assertEquals($carrinho->cliente, array('nome' => 'Rafael', 'cep' => '12345678', 'end'  => 'R Bela Vista'));
+    }
 }
 
 // Fazendo o sistema rodar sozinho
