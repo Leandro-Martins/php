@@ -67,17 +67,10 @@ class CarrinhoMostraTest extends PHPUnit_Framework_TestCase
 
     public function testMostraProdutosFretePeso()
     {
-        return;
-        $carrinho = Pagseguro::Carrinho('mike@visie.com.br');
-        $carrinho->produto(array('id'=>'AREA', 'desc'=>'Area 51', 'qtd'=>5, 'valor'=>10, 'peso'=>1.7));
+        $content = $this->mostra('mike@visie.com.br', array('id'=>'AREA', 'desc'=>'Area 51', 'qtd'=>5, 'valor'=>10, 'peso'=>170, 'frete' => 20));
 
-        ob_start();
-        $carrinho->mostra();
-        $content = ob_get_contents();
-        ob_end_clean();
-
-        $expected = '<form action="https://pagseguro.uol.com.br/checkout/checkout.jhtml" method="post" target="_blank"><input type="hidden" name="tipo" value="CBR" /><input type="hidden" name="moeda" value="BRL" /><input type="hidden" name="email_cobranca" value="fake@visie.com.br" />'
-        . '<input type="hidden" name="item_id_1" value="1" /><input type="hidden" name="item_descr_1" value="Carrinho" /><input type="hidden" name="item_valor_1" value="2470" /><input type="hidden" name="item_quant_1" value="2" />'
+        $expected = '<form action="https://pagseguro.uol.com.br/checkout/checkout.jhtml" id="form_pagseguro" method="post" target="pagseguro"><input type="hidden" name="tipo" value="CP" /><input type="hidden" name="moeda" value="BRL" /><input type="hidden" name="email_cobranca" value="mike@visie.com.br" />'
+        . '<input type="hidden" name="item_id_1" value="AREA" /><input type="hidden" name="item_descr_1" value="Area 51" /><input type="hidden" name="item_valor_1" value="1000" /><input type="hidden" name="item_quant_1" value="5" /><input type="hidden" name="item_frete_1" value="2000" /><input type="hidden" name="item_peso_1" value="170" />'
         . '<input type="submit" value="Finalizar!" /></form>';
         $this->assertEquals($expected, $content);
     }
