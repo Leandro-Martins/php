@@ -222,42 +222,58 @@ class Pagseguro_Carrinho
 
     public function mostra(array $config=array())
     {
-        $saida = $id = $target = '';
+        $id = $target = '';
+
         if ($this->id_formulario) {
             $id = " id=\"{$this->id_formulario}\"";
         }
         if ($this->target) {
             $target = " target=\"{$this->target}\"";
         }
+        $open_form = sprintf('<form action="%s"%s method="post"%s>', $this->url, $id, $target);
+
+        $setup     = $this->_mostra_setup();
+        $produtos  = $this->_mostra_produtos();
+        $cliente   = $this->_mostra_cliente();
+        $botao     = $this->_mostra_botao($this->button);
+
+        $close_form = '</form>';
+
+        $interna   = $setup . $produtos . $cliente;
+        $saida = $open_form . $interna . $botao . $close_form . $arter_form;
+
+        print $saida;
+    }
+
+    private function _mostra_setup()
+    {
+        $setup = '';
         if ($this->tipo) {
             $this->tipo = strtoupper($this->tipo) == 'CP' ? 'CP' : 'CBR';
         }
 
-        $saida .= sprintf('<form action="%s"%s method="post"%s>', $this->url, $id, $target);
-
         foreach (self::$_itens_config_input as $key) {
             if ($this->$key) {
-                $saida .= $this->input($key, $this->$key);
+                $setup .= $this->input($key, $this->$key);
             }
         }
 
         if ($this->frete) {
-            $saida .= $this->input('item_frete_1', $this->frete);
+            $setup .= $this->input('item_frete_1', $this->frete);
         }
         if ($this->peso) {
-            $saida .= $this->input('item_peso_1', $this->peso);
+            $setup .= $this->input('item_peso_1', $this->peso);
         }
+        return $setup;
+    }
 
-        $saida .= $this->_mostra_produtos();
-
+    private function _mostra_cliente()
+    {
+        $cliente = '';
         foreach ($this->cliente as $key=>$value) {
-            $saida .= $this->input('cliente_'.$key, $value);
+            $cliente .= $this->input('cliente_'.$key, $value);
         }
-        $saida .= $this->_mostra_botao($this->button);
-
-        $saida .= '</form>';
-
-        print $saida;
+        return $cliente;
     }
 
     private function _mostra_produtos()
