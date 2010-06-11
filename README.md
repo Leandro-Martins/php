@@ -123,3 +123,10 @@ Informa dados ao carrinho do cliente, você pode usar este comando para passar a
 ## O método mostra
 
 Exibe o formulário de carrinho de compras, você pode passar configurações para apenas aquela exibição.
+
+# Classe de Doação
+
+A classe de doação é uma classe de carrinho já pré-configurada com URL para doação, tipo de carrinho vario e sem id de formulário. Dessa forma, é fácil criar botão de doação. Veja:
+
+    $doacao  = Pagseguro::Doacao('mike@visie.com.br');
+    $doacao->mostra();

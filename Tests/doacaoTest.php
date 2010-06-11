@@ -20,6 +20,5 @@ class DoacaoTest extends PHPUnit_Framework_TestCase
 
         $expected = '<form action="https://pagseguro.uol.com.br/checkout/doacao.jhtml" method="post" target="pagseguro"><input type="hidden" name="moeda" value="BRL" /><input type="hidden" name="email_cobranca" value="mike@visie.com.br" /><input type="submit" value="Finalizar!" /></form>';
         $this->assertEquals($expected, $content);
-
     }
 }
