@@ -18,10 +18,13 @@ class CarrinhoMostraTest extends PHPUnit_Framework_TestCase
 
     public $basic_product = '<input type="hidden" name="item_id_1" value="1" /><input type="hidden" name="item_descr_1" value="Carrinho" /><input type="hidden" name="item_valor_1" value="2470" /><input type="hidden" name="item_quant_1" value="2" />';
 
-    public function mostra($settings, $produtos)
+    public function mostra($settings, $produtos, $cliente=null)
     {
         $carrinho = Pagseguro::Carrinho($settings);
         $carrinho->produto($produtos);
+        if ($cliente) {
+            $carrinho->cliente($cliente);
+        }
 
         ob_start();
         $carrinho->mostra();
@@ -90,6 +93,18 @@ class CarrinhoMostraTest extends PHPUnit_Framework_TestCase
         . '<input type="hidden" name="item_peso_1" value="2000" />'
         . $this->basic_product
         . '<input type="hidden" name="item_id_2" value="2" /><input type="hidden" name="item_descr_2" value="Boneca" /><input type="hidden" name="item_valor_2" value="3500" /><input type="hidden" name="item_quant_2" value="1" />'
+        . '<input type="submit" value="Finalizar!" /></form>';
+        $this->assertEquals($expected, $content);
+    }
+
+    public function testMostraCarrinhoCliente()
+    {
+        $content = $this->mostra('mike@visie.com.br',
+                        array('id' => '1', 'desc' => 'Carrinho', 'valor' => 24.7, 'quantidade' => 2),
+                        array('nome' => 'Michael Castillo', 'email' => 'fake@visie.com.br')
+            );
+        $expected = $this->basic_exit.$this->basic_product
+        . '<input type="hidden" name="cliente_nome" value="Michael Castillo" /><input type="hidden" name="cliente_email" value="fake@visie.com.br" />'
         . '<input type="submit" value="Finalizar!" /></form>';
         $this->assertEquals($expected, $content);
     }

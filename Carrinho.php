@@ -213,6 +213,10 @@ class Pagseguro_Carrinho
 
         $saida .= $this->_mostra_produtos();
 
+        foreach ($this->cliente as $key=>$value) {
+            $saida .= $this->input('cliente_'.$key, $value);
+        }
+
         $saida .= '<input type="submit" value="Finalizar!" />';
         $saida .= '</form>';
 
