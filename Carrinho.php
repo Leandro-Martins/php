@@ -12,7 +12,7 @@ class Pagseguro_Carrinho
     static private $_itens_cliente = array('nome', 'cep', 'end', 'num', 'compl',
                                            'bairro', 'cidade', 'uf', 'pais',
                                            'ddd', 'tel', 'email');
-    static private $_substitutos = array(
+    static private $_substitutos_produtos = array(
         'id'    => array('id', 'ID', 'Id', 'code', 'codigo', 'SKU', 'sku',
                          'uid', 'uniqid', 'slug'),
         'descr' => array('descr', 'desc', 'descricao', 'description'),
@@ -20,6 +20,22 @@ class Pagseguro_Carrinho
         'quant' => array('quant', 'quantidade', 'qtd', 'qty', 'quantity'),
         'frete' => array('frete', 'freight'),
         'peso'  => array('peso', 'weight'),
+    );
+    static private $_substitutos_cliente = array(
+        'nome'   => array('nome', 'name'),
+        'cep'    => array('cep', 'CEP', 'postal', 'postalcode', 'postal_code'),
+        'end'    => array('end', 'endereco', 'endereço', 'address', 'address1',
+                          'addr', 'addr1'),
+        'num'    => array('num', 'numero', 'número', 'number', 'n'),
+        'compl'  => array('compl', 'complemento', 'complement', 'address2', 
+                          'addr2'),
+        'bairro' => array('bairro'),
+        'cidade' => array('cidade', 'city', 'cid'),
+        'uf'     => array('uf', 'estado', 'state'),
+        'pais'   => array('pais', 'país', 'country'),
+        'ddd'    => array('ddd'),
+        'tel'    => array('tel', 'telefone', 'telephone'),
+        'email'  => array('email', 'e-mail', 'mail'),
     );
 
     public $id_formulario = 'form_pagseguro';
@@ -86,7 +102,7 @@ class Pagseguro_Carrinho
             return;
         }
         settype($produto, 'array');
-        foreach (self::$_substitutos as $chave=>$substs) {
+        foreach (self::$_substitutos_produtos as $chave=>$substs) {
             foreach ($substs as $item) {
                 if (isset($produto[$item]) && $produto[$item]) {
                     $valor = $produto[$item];
@@ -125,10 +141,18 @@ class Pagseguro_Carrinho
     public function cliente($key, $value=null)
     {
         if (is_array($key) || is_object($key)) {
+        	settype($key, 'array');
             foreach ($key as $k=>$v) {
                 $this->cliente((string) $k, (string) $v);
             }
             return;
+        }
+        foreach (self::$_substitutos_cliente as $chave=>$valores) {
+            foreach ($valores as $item) {
+            	if ($key==$item) {
+                	$key = $chave;
+                }
+            }
         }
         if (in_array($key, self::$_itens_cliente)) {
             $this->cliente[$key] = $value;

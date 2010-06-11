@@ -364,12 +364,71 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
         $carrinho->cliente('invalido', 'Michael');
         $this->assertEquals($carrinho->cliente, array());
     }
+    
+    public function testInsereSubstitutosCliente()
+    {
+        $carrinho=Pagseguro::Carrinho('mike@visie.com.br');
+        $carrinho->cliente('nome', 'Michael Granados');
+        $this->assertEquals($carrinho->cliente, array('nome' => 'Michael Granados'));
+        $carrinho->cliente('name', 'André Gonçalves');
+        $this->assertEquals($carrinho->cliente, array('nome' => 'André Gonçalves'));
+        $carrinho->cliente('end', 'R. Aldair Camargo');
+        $this->assertEquals($carrinho->cliente['end'], 'R. Aldair Camargo');
+        $carrinho->cliente('endereço', 'Pc. Herois da FEB');
+        $this->assertEquals($carrinho->cliente['end'], 'Pc. Herois da FEB');
+    }
 
-    function testInsereDadosInvalidos()
+    function testInsereClienteDadosInvalidos()
     {
         $carrinho=Pagseguro::Carrinho('mike@visie.com.br');
         $carrinho->cliente('invalido', 'Michael');
         $this->assertEquals($carrinho->cliente, array());
+    }
+
+    public function testInsereClienteVariosDadosDeUmaVez()
+    {
+    	$dados = array(
+    	    'nome'     => 'Arnaldo Antunes',
+    	    'endereco' => 'R. Julio Prestes',
+    	    'numero'   => 570,
+    	    'bairro'   => 'Campo Limpo',
+    	    'cidade'   => 'São Paulo',
+    	    'estado'   => 'SP',
+        );
+    	$verificar = array(
+    	    'nome'   => 'Arnaldo Antunes',
+    	    'end'    => 'R. Julio Prestes',
+    	    'num'    => 570,
+    	    'bairro' => 'Campo Limpo',
+    	    'cidade' => 'São Paulo',
+    	    'uf'     => 'SP',
+        );
+        $carrinho=Pagseguro::Carrinho('mike@visie.com.br');
+        $carrinho->cliente($dados);
+        $this->assertEquals($verificar, $carrinho->cliente);
+    }
+
+    public function testInsereClienteVariosDadosDeUmaVezSimpleXML()
+    {
+    	$dados = new SimpleXMLElement('<data>
+                                           <nome>Manoel Neto</nome>
+                                           <endereco>Pc Cesar Coelho</endereco>
+                                           <numero>302</numero>
+                                           <bairro>Bella Vista</bairro>
+                                           <cid>Rio de Janeiro</cid>
+                                           <estado>RJ</estado>
+                                       </data>');
+    	$verificar = array(
+    	    'nome'   => 'Manoel Neto',
+    	    'end'    => 'Pc Cesar Coelho',
+    	    'num'    => 302,
+    	    'bairro' => 'Bella Vista',
+    	    'cidade' => 'Rio de Janeiro',
+    	    'uf'     => 'RJ',
+        );
+        $carrinho=Pagseguro::Carrinho('mike@visie.com.br');
+        $carrinho->cliente($dados);
+        $this->assertEquals($verificar, $carrinho->cliente);
     }
 }
 
