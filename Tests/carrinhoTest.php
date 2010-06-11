@@ -132,7 +132,7 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
             array('id_formulario' , 'meu_formulario'   , 'meu_formulario'   ),
             array('tipo'          , 'CP'               , 'CP'               ),
             array('moeda'         , 'BRL'              , 'BRL'              ),
-            array('frete'         , 26                 , 26                 ),
+            array('frete'         , 26                 , 2600               ),
         );
     }
 
@@ -198,9 +198,9 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
             array(array( 'id' => '0001', 'descr' => 'Veu de noiva', 'valor' => 89.9, 'quant' => 1), 8990),
             array((object) array( 'id' => '0001', 'descr' => 'Veu de noiva', 'valor' => '85,9', 'quant' => 1), 8590),
             array(new SimpleXMLElement('<data><id>201</id><descr>Amigos para sempre</descr><valor>2,90</valor><quant>3</quant></data>'), 290),
-            array(new SimpleXMLElement('<data><id>2</id><descr>o Rappa</descr><valor>2.3</valor><quant>12</quant><frete>99</frete></data>'), 230, 99),
-            array(array( 'id' => '0032', 'descr' => 'Veu de noiva', 'valor' => '84,9', 'quant' => 1, 'frete' => 20), 8490, 20),
-            array(array( 'id' => '002', 'descr' => 'Caneta', 'valor' => '4', 'quant' => 3, 'frete' => '320', 'peso' => '200'), 400, 320),
+            array(new SimpleXMLElement('<data><id>2</id><descr>o Rappa</descr><valor>2.3</valor><quant>12</quant><frete>99</frete></data>'), 230, 9900),
+            array(array( 'id' => '0032', 'descr' => 'Veu de noiva', 'valor' => '84,9', 'quant' => 1, 'frete' => 20), 8490, 2000),
+            array(array( 'id' => '002', 'descr' => 'Caneta', 'valor' => '4', 'quant' => 3, 'frete' => '320', 'peso' => '200'), 400, 32000),
         );
     }
 

@@ -81,7 +81,10 @@ class Pagseguro_Carrinho
         }
         if (in_array($key, self::$_itens_config)) {
             settype($value, 'string');
-            if ($key=='frete' || $key=='peso') {
+            if ($key=='frete') {
+                $value = $this->numero($value);
+            }
+            if ($key=='peso') {
                 $value = $this->numero($value, false);
             }
             $this->$key = $value;
@@ -140,7 +143,7 @@ class Pagseguro_Carrinho
         settype($produto, 'object');
         $produto->valor = $this->numero($produto->valor);
         if (isset($produto->frete)) {
-            $produto->frete = $this->numero($produto->frete, false);
+            $produto->frete = $this->numero($produto->frete);
         }
         if (isset($produto->peso)) {
             $produto->peso = $this->numero($produto->peso, false);
