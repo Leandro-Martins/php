@@ -101,7 +101,7 @@ class CarrinhoMostraTest extends PHPUnit_Framework_TestCase
     {
         $content = $this->mostra('mike@visie.com.br',
                         array('id' => '1', 'desc' => 'Carrinho', 'valor' => 24.7, 'quantidade' => 2),
-                        array('nome' => 'Michael Castillo', 'email' => 'fake@visie.com.br')
+                        array('nome' => 'Michael Castillo', 'mail' => 'fake@visie.com.br')
             );
         $expected = $this->basic_exit.$this->basic_product
         . '<input type="hidden" name="cliente_nome" value="Michael Castillo" /><input type="hidden" name="cliente_email" value="fake@visie.com.br" />'
