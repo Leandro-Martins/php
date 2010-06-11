@@ -16,6 +16,8 @@ class CarrinhoMostraTest extends PHPUnit_Framework_TestCase
 {
     public $basic_exit = '<form action="https://pagseguro.uol.com.br/checkout/checkout.jhtml" id="form_pagseguro" method="post" target="pagseguro"><input type="hidden" name="tipo" value="CP" /><input type="hidden" name="moeda" value="BRL" /><input type="hidden" name="email_cobranca" value="mike@visie.com.br" />';
 
+    public $basic_product = '<input type="hidden" name="item_id_1" value="1" /><input type="hidden" name="item_descr_1" value="Carrinho" /><input type="hidden" name="item_valor_1" value="2470" /><input type="hidden" name="item_quant_1" value="2" />';
+
     public function mostra($settings, $produtos)
     {
         $carrinho = Pagseguro::Carrinho($settings);
@@ -32,7 +34,7 @@ class CarrinhoMostraTest extends PHPUnit_Framework_TestCase
         $content = $this->mostra('mike@visie.com.br',
                         array('id' => '1', 'desc' => 'Carrinho', 'valor' => 24.7, 'quantidade' => 2));
 
-        $saida = $this->basic_exit.'<input type="hidden" name="item_id_1" value="1" /><input type="hidden" name="item_descr_1" value="Carrinho" /><input type="hidden" name="item_valor_1" value="2470" /><input type="hidden" name="item_quant_1" value="2" /><input type="submit" value="Finalizar!" /></form>';
+        $saida = $this->basic_exit.$this->basic_product.'<input type="submit" value="Finalizar!" /></form>';
         $this->assertEquals($content, $saida);
     }
 
@@ -45,7 +47,7 @@ class CarrinhoMostraTest extends PHPUnit_Framework_TestCase
             'target' => '_blank'
         ), array('id' => '1', 'desc' => 'Carrinho', 'valor' => 24.7, 'quantidade' => 2));
 
-        $expected = '<form action="https://pagseguro.uol.com.br/checkout/checkout.jhtml" method="post" target="_blank"><input type="hidden" name="tipo" value="CBR" /><input type="hidden" name="moeda" value="BRL" /><input type="hidden" name="email_cobranca" value="fake@visie.com.br" /><input type="hidden" name="item_id_1" value="1" /><input type="hidden" name="item_descr_1" value="Carrinho" /><input type="hidden" name="item_valor_1" value="2470" /><input type="hidden" name="item_quant_1" value="2" /><input type="submit" value="Finalizar!" /></form>';
+        $expected = '<form action="https://pagseguro.uol.com.br/checkout/checkout.jhtml" method="post" target="_blank"><input type="hidden" name="tipo" value="CBR" /><input type="hidden" name="moeda" value="BRL" /><input type="hidden" name="email_cobranca" value="fake@visie.com.br" />'.$this->basic_product.'<input type="submit" value="Finalizar!" /></form>';
         $this->assertEquals($expected, $content);
     }
 
@@ -62,7 +64,7 @@ class CarrinhoMostraTest extends PHPUnit_Framework_TestCase
         ));
 
         $expected = '<form action="https://pagseguro.uol.com.br/checkout/checkout.jhtml" method="post" target="_blank"><input type="hidden" name="tipo" value="CBR" /><input type="hidden" name="moeda" value="BRL" /><input type="hidden" name="email_cobranca" value="fake@visie.com.br" />'
-        . '<input type="hidden" name="item_id_1" value="1" /><input type="hidden" name="item_descr_1" value="Carrinho" /><input type="hidden" name="item_valor_1" value="2470" /><input type="hidden" name="item_quant_1" value="2" />'
+        . $this->basic_product
         . '<input type="submit" value="Finalizar!" /></form>';
         $this->assertEquals($expected, $content);
     }
@@ -86,7 +88,7 @@ class CarrinhoMostraTest extends PHPUnit_Framework_TestCase
         $expected = $this->basic_exit
         . '<input type="hidden" name="item_frete_1" value="3000" />'
         . '<input type="hidden" name="item_peso_1" value="2000" />'
-        . '<input type="hidden" name="item_id_1" value="1" /><input type="hidden" name="item_descr_1" value="Carrinho" /><input type="hidden" name="item_valor_1" value="2470" /><input type="hidden" name="item_quant_1" value="2" />'
+        . $this->basic_product
         . '<input type="hidden" name="item_id_2" value="2" /><input type="hidden" name="item_descr_2" value="Boneca" /><input type="hidden" name="item_valor_2" value="3500" /><input type="hidden" name="item_quant_2" value="1" />'
         . '<input type="submit" value="Finalizar!" /></form>';
         $this->assertEquals($expected, $content);
