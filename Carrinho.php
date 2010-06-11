@@ -8,6 +8,9 @@ class Pagseguro_Carrinho
                                            'ref_transacao', 'tipo', 'moeda',
                                            'tipo_frete', 'encoding', 'frete',
                                            'peso');
+    static private $_itens_config_input  = array('tipo', 'moeda',
+                                           'email_cobranca', 'ref_transacao',
+                                           'tipo_frete', 'encoding');
     static private $_itens_produto = array('id', 'descr', 'quant', 'valor',
                                           'frete', 'peso');
     static private $_itens_produtos_obrigatorios = array('id', 'descr', 'quant',
@@ -200,9 +203,12 @@ class Pagseguro_Carrinho
         }
         $this->tipo = strtoupper($this->tipo) == 'CP' ? 'CP' : 'CBR';
         $saida .= sprintf('<form action="%s"%s method="post"%s>', $this->url, $id, $target);
-        $saida .= $this->input('tipo', $this->tipo);
-        $saida .= $this->input('moeda', $this->moeda);
-        $saida .= $this->input('email_cobranca', $this->email_cobranca);
+
+        foreach (self::$_itens_config_input as $key) {
+            if ($this->$key) {
+                $saida .= $this->input($key, $this->$key);
+            }
+        }
 
         if ($this->frete) {
             $saida .= $this->input('item_frete_1', $this->frete);

@@ -99,11 +99,11 @@ class CarrinhoMostraTest extends PHPUnit_Framework_TestCase
 
     public function testMostraCarrinhoCliente()
     {
-        $content = $this->mostra('mike@visie.com.br',
+        $content = $this->mostra(array('email_cobranca' => 'mike@visie.com.br', 'encoding' => 'UTF-8'),
                         array('id' => '1', 'desc' => 'Carrinho', 'valor' => 24.7, 'quantidade' => 2),
                         array('nome' => 'Michael Castillo', 'mail' => 'fake@visie.com.br')
             );
-        $expected = $this->basic_exit.$this->basic_product
+        $expected = $this->basic_exit.'<input type="hidden" name="encoding" value="UTF-8" />'.$this->basic_product
         . '<input type="hidden" name="cliente_nome" value="Michael Castillo" /><input type="hidden" name="cliente_email" value="fake@visie.com.br" />'
         . '<input type="submit" value="Finalizar!" /></form>';
         $this->assertEquals($expected, $content);
