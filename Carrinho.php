@@ -8,7 +8,7 @@ class Pagseguro_Carrinho
                                            'email_cobranca', 'ref_transacao',
                                            'tipo', 'moeda', 'tipo_frete',
                                            'encoding', 'frete', 'peso',
-                                           'open_form', 'close_form');
+                                           'open_form', 'close_form', 'print');
     static private $_itens_config_input  = array('tipo', 'moeda',
                                            'email_cobranca', 'ref_transacao',
                                            'tipo_frete', 'encoding');
@@ -74,6 +74,7 @@ class Pagseguro_Carrinho
     public $button         = 1;     // Botão para exibir, pode ser um inteiro indice do $_buttons ou html puro
     public $open_form      = true;
     public $close_form     = true;
+    public $print          = true;
 
     // Inputs
     public $tipo           = 'CP';  // Tipo de carrinho: CP ou CBR
@@ -225,28 +226,26 @@ class Pagseguro_Carrinho
 
     public function mostra(array $config=array())
     {
-        $id = $target = $after_form = '';
-
         $open_form  = $this->_mostra_open_form();
         $setup      = $this->_mostra_setup();
         $produtos   = $this->_mostra_produtos();
         $cliente    = $this->_mostra_cliente();
         $botao      = $this->_mostra_botao($this->button);
         $close_form = $this->close_form ? '</form>' : '';
-        if ($this->javascript && $this->id_formulario) {
-            $after_form = '<script type="text/javascript>'
-                        . 'document.getElementById(\''
-                        . $this->id_formulario . '\').submit()</script>';
-        }
+        $after_form = $this->_mostra_after_form();
 
         $interna   = $setup . $produtos . $cliente;
         $saida = $open_form . $interna . $botao . $close_form . $after_form;
 
-        print $saida;
+        if ($this->print) {
+            print $saida;
+        }
+        return $saida;
     }
 
     private function _mostra_open_form()
     {
+        $id = $target = '';
         if (!$this->open_form) {
             return '';
         }
@@ -257,6 +256,15 @@ class Pagseguro_Carrinho
             $target = " target=\"{$this->target}\"";
         }
         return sprintf('<form action="%s"%s method="post"%s>', $this->url, $id, $target);
+    }
+
+    private function _mostra_after_form()
+    {
+        if ($this->javascript && $this->id_formulario) {
+            return '<script type="text/javascript>document.getElementById(\''
+                   . $this->id_formulario . '\').submit()</script>';
+        }
+        return '';
     }
 
     private function _mostra_setup()

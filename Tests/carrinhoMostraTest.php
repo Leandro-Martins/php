@@ -163,6 +163,20 @@ class CarrinhoMostraTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($content, $saida);
     }
 
+    public function testMostraCarrinhoNotPrint()
+    {
+        $content = $this->mostra(array('email_cobranca' => 'mike@visie.com.br', 'button' => '', 'print' => false), array('id' => '1', 'desc' => 'Carrinho', 'valor' => 24.7, 'quantidade' => 2));
+        $this->assertEquals($content, '');
+    }
+
+    public function testMostraCarrinhoReturn()
+    {
+        $carrinho = Pagseguro::Carrinho(array('email_cobranca' => 'mike@visie.com.br', 'button' => '', 'print' => false));
+        $content = $carrinho->mostra();
+
+        $saida = $this->basic_exit.'</form>';
+        $this->assertEquals($content, $saida);
+    }
 }
 
 

@@ -89,3 +89,14 @@ Você pode setar vários valores de uma só vez passando um array ou um objeto p
     ));
 
 
+## O método produto
+
+Adiciona um produto ao carrinho de compras
+
+## O método cliente
+
+Informa dados ao carrinho do cliente, você pode usar este comando para passar ao PagSeguro informações sobre o cliente. Caso você envie todas as informações necessárias, seu cliente pulará a etapa de preencher dados como nome, CEP e endereço indo direto ao pagamento de fato.
+
+## O método mostra
+
+Exibe o formulário de carrinho de compras
