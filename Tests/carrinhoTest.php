@@ -430,6 +430,23 @@ class CarrinhoTest extends PHPUnit_Framework_TestCase
         $carrinho->cliente($dados);
         $this->assertEquals($verificar, $carrinho->cliente);
     }
+
+    public function testInput()
+    {
+        $carrinho = Pagseguro::Carrinho('mike@visie.com.br');
+        $this->assertEquals('<input type="hidden" name="idade" value="20" />', $carrinho->input('idade', 20));
+    }
+
+    public function testMostraCarrinhoSimples()
+    {
+        $carrinho = Pagseguro::Carrinho('mike@visie.com.br');
+        ob_start();
+        $carrinho->mostra();
+        $content = ob_get_contents();
+        ob_end_clean();
+        $saida = '<form action="https://pagseguro.uol.com.br/checkout/checkout.jhtml" id="formulario_pagseguro" method="post"><inpt type="hidden" name="tipo" value="CP" /><input type="hidden" name="moeda" value="BRL" /><input type="hidden" name="email_cobranca" value="mike@visie.com.br" /><input type="submit" value="Finalizar!" /></form>';
+        $this->assertEquals($content, $saida);
+    }
 }
 
 // Fazendo o sistema rodar sozinho

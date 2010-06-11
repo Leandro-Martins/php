@@ -164,4 +164,14 @@ class Pagseguro_Carrinho
             $this->cliente[$key] = $value;
         }
     }
+
+    public function input($name, $value)
+    {
+        return sprintf('<input type="hidden" name="%s" value="%s" />', $name, $value);
+    }
+
+    public function mostra(array $config=array())
+    {
+
+    }
 }
