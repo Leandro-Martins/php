@@ -222,7 +222,7 @@ class Pagseguro_Carrinho
 
     public function mostra(array $config=array())
     {
-        $id = $target = '';
+        $id = $target = $after_form = '';
 
         if ($this->id_formulario) {
             $id = " id=\"{$this->id_formulario}\"";
@@ -230,17 +230,22 @@ class Pagseguro_Carrinho
         if ($this->target) {
             $target = " target=\"{$this->target}\"";
         }
-        $open_form = sprintf('<form action="%s"%s method="post"%s>', $this->url, $id, $target);
+        $open_form  = sprintf('<form action="%s"%s method="post"%s>', $this->url, $id, $target);
 
-        $setup     = $this->_mostra_setup();
-        $produtos  = $this->_mostra_produtos();
-        $cliente   = $this->_mostra_cliente();
-        $botao     = $this->_mostra_botao($this->button);
+        $setup      = $this->_mostra_setup();
+        $produtos   = $this->_mostra_produtos();
+        $cliente    = $this->_mostra_cliente();
+        $botao      = $this->_mostra_botao($this->button);
 
         $close_form = '</form>';
+        if ($this->javascript && $this->id_formulario) {
+            $after_form = '<script type="text/javascript>'
+                        . 'document.getElementById(\''
+                        . $this->id_formulario . '\').submit()</script>';
+        }
 
         $interna   = $setup . $produtos . $cliente;
-        $saida = $open_form . $interna . $botao . $close_form . $arter_form;
+        $saida = $open_form . $interna . $botao . $close_form . $after_form;
 
         print $saida;
     }
