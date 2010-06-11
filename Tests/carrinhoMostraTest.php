@@ -14,52 +14,68 @@ require_once 'PHPUnit/Framework.php';
 
 class CarrinhoMostraTest extends PHPUnit_Framework_TestCase
 {
-    public function testMostraCarrinhoSimples()
+    public function mostra($settings, $produtos)
     {
-        $carrinho = Pagseguro::Carrinho('mike@visie.com.br');
-        $carrinho->produto(array('id' => '1', 'desc' => 'Carrinho', 'valor' => 24.7, 'quantidade' => 2));
+        $carrinho = Pagseguro::Carrinho($settings);
+        $carrinho->produto($produtos);
 
         ob_start();
         $carrinho->mostra();
         $content = ob_get_contents();
         ob_end_clean();
+        return $content;
+    }
+    public function testMostraCarrinhoSimples()
+    {
+        $content = $this->mostra('mike@visie.com.br',
+                        array('id' => '1', 'desc' => 'Carrinho', 'valor' => 24.7, 'quantidade' => 2));
+
         $saida = '<form action="https://pagseguro.uol.com.br/checkout/checkout.jhtml" id="form_pagseguro" method="post" target="pagseguro"><input type="hidden" name="tipo" value="CP" /><input type="hidden" name="moeda" value="BRL" /><input type="hidden" name="email_cobranca" value="mike@visie.com.br" /><input type="hidden" name="item_id_1" value="1" /><input type="hidden" name="item_descr_1" value="Carrinho" /><input type="hidden" name="item_valor_1" value="2470" /><input type="hidden" name="item_quant_1" value="2" /><input type="submit" value="Finalizar!" /></form>';
         $this->assertEquals($content, $saida);
     }
 
     public function testMostraCarrinhoPagSeguro()
     {
-        $carrinho = Pagseguro::Carrinho(array(
+        $content = $this->mostra(array(
             'email_cobranca' => 'fake@visie.com.br',
             'tipo' => 'CBR',
             'id_formulario' => false,
             'target' => '_blank'
-        ));
-        $carrinho->produto(array('id' => '1', 'desc' => 'Carrinho', 'valor' => 24.7, 'quantidade' => 2));
+        ), array('id' => '1', 'desc' => 'Carrinho', 'valor' => 24.7, 'quantidade' => 2));
 
-        ob_start();
-        $carrinho->mostra();
-        $content = ob_get_contents();
-        ob_end_clean();
         $expected = '<form action="https://pagseguro.uol.com.br/checkout/checkout.jhtml" method="post" target="_blank"><input type="hidden" name="tipo" value="CBR" /><input type="hidden" name="moeda" value="BRL" /><input type="hidden" name="email_cobranca" value="fake@visie.com.br" /><input type="hidden" name="item_id_1" value="1" /><input type="hidden" name="item_descr_1" value="Carrinho" /><input type="hidden" name="item_valor_1" value="2470" /><input type="hidden" name="item_quant_1" value="2" /><input type="submit" value="Finalizar!" /></form>';
         $this->assertEquals($expected, $content);
     }
 
     public function testMostraCarrinhoPagSeguroMaisDeUmProduto()
     {
-        $carrinho = Pagseguro::Carrinho(array(
+        $content = $this->mostra(array(
             'email_cobranca' => 'fake@visie.com.br',
             'tipo' => 'CBR',
             'id_formulario' => false,
             'target' => '_blank'
+        ), array(
+            array('id' => '1', 'desc' => 'Carrinho', 'valor' => 24.7, 'quantidade' => 2),
+            array('id' => '2', 'desc' => 'Boneca', 'valor' => 35, 'quantidade' => 1)
         ));
-        $carrinho->produto(array('id' => '1', 'desc' => 'Carrinho', 'valor' => 24.7, 'quantidade' => 2));
-        $carrinho->produto(array('id' => '2', 'desc' => 'Boneca', 'valor' => 35, 'quantidade' => 1));
+
+        $expected = '<form action="https://pagseguro.uol.com.br/checkout/checkout.jhtml" method="post" target="_blank"><input type="hidden" name="tipo" value="CBR" /><input type="hidden" name="moeda" value="BRL" /><input type="hidden" name="email_cobranca" value="fake@visie.com.br" />'
+        . '<input type="hidden" name="item_id_1" value="1" /><input type="hidden" name="item_descr_1" value="Carrinho" /><input type="hidden" name="item_valor_1" value="2470" /><input type="hidden" name="item_quant_1" value="2" />'
+        . '<input type="submit" value="Finalizar!" /></form>';
+        $this->assertEquals($expected, $content);
+    }
+
+    public function testMostraProdutosFretePeso()
+    {
+        return;
+        $carrinho = Pagseguro::Carrinho('mike@visie.com.br');
+        $carrinho->produto(array('id'=>'AREA', 'desc'=>'Area 51', 'qtd'=>5, 'valor'=>10, 'peso'=>1.7));
 
         ob_start();
         $carrinho->mostra();
         $content = ob_get_contents();
         ob_end_clean();
+
         $expected = '<form action="https://pagseguro.uol.com.br/checkout/checkout.jhtml" method="post" target="_blank"><input type="hidden" name="tipo" value="CBR" /><input type="hidden" name="moeda" value="BRL" /><input type="hidden" name="email_cobranca" value="fake@visie.com.br" />'
         . '<input type="hidden" name="item_id_1" value="1" /><input type="hidden" name="item_descr_1" value="Carrinho" /><input type="hidden" name="item_valor_1" value="2470" /><input type="hidden" name="item_quant_1" value="2" />'
         . '<input type="submit" value="Finalizar!" /></form>';
