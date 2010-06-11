@@ -291,10 +291,18 @@ class Pagseguro_Carrinho
         }
 
         if ($this->frete) {
-            $setup .= $this->input('item_frete_1', $this->frete);
+            if ($this->tipo=='CP') {
+                $setup .= $this->input('item_frete_1', $this->frete);
+            } else {
+                $setup .= $this->input('frete', $this->frete);
+            }
         }
         if ($this->peso) {
-            $setup .= $this->input('item_peso_1', $this->peso);
+            if ($this->tipo=='CP') {
+                $setup .= $this->input('item_peso_1', $this->peso);
+            } else {
+                $setup .= $this->input('peso', $this->peso);
+            }
         }
         return $setup;
     }
@@ -326,7 +334,12 @@ class Pagseguro_Carrinho
                 if ( $is_peso_unico || $is_frete_unico ) {
                     continue 1;
                 }
-                $saida .= $this->input('item_'.$key.'_'.$item, $value);
+                $chave = 'item_'.$key.'_'.$item;
+                $is_frete_or_peso = in_array($key, array('frete', 'peso'));
+                if ($is_frete_or_peso && $this->tipo=='CBR') {
+                    $chave = $key;
+                }
+                $saida .= $this->input($chave, $value);
             }
             if ('CBR' === $this->tipo) {
                 break;

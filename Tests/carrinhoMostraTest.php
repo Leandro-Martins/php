@@ -54,6 +54,19 @@ class CarrinhoMostraTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $content);
     }
 
+    public function testMostraCarrinhoPagSeguroComPeso()
+    {
+        $content = $this->mostra(array(
+            'email_cobranca' => 'fake@visie.com.br',
+            'tipo' => 'CBR',
+            'id_formulario' => false,
+            'target' => '_blank'
+        ), array('id' => '1', 'desc' => 'Carrinho', 'valor' => 24.7, 'quantidade' => 2, 'peso' => 200));
+
+        $expected = '<form action="https://pagseguro.uol.com.br/checkout/checkout.jhtml" method="post" target="_blank"><input type="hidden" name="tipo" value="CBR" /><input type="hidden" name="moeda" value="BRL" /><input type="hidden" name="email_cobranca" value="fake@visie.com.br" />'.$this->basic_product.'<input type="hidden" name="peso" value="200" /><input type="submit" value="Finalizar!" /></form>';
+        $this->assertEquals($expected, $content);
+    }
+
     public function testMostraCarrinhoPagSeguroMaisDeUmProduto()
     {
         $content = $this->mostra(array(
