@@ -26,6 +26,11 @@ class Pagseguro
         return self::getModule('Retorno');
     }
 
+    static function doacao($args=null)
+    {
+        return self::getModule('Doacao', $args);
+    }
+
     public function __get($key)
     {
         if (in_array($key, array('carrinho', 'frete', 'retorno'))) {

@@ -21,7 +21,7 @@ class PagseguroTest extends PHPUnit_Framework_TestCase
     public function testGetValidProprieties()
     {
         $p = new Pagseguro;
-        foreach (array('carrinho', 'frete', 'retorno') as $item) {
+        foreach (array('carrinho', 'frete', 'retorno', 'doacao') as $item) {
             $saida = $p->$item;
             $this->assertTrue((bool) $saida);
             $this->assertEquals('Pagseguro_'.ucfirst($item), get_class($saida));
@@ -37,7 +37,7 @@ class PagseguroTest extends PHPUnit_Framework_TestCase
 
     public function testCallValidStaticMethods()
     {
-        foreach (array('carrinho', 'frete', 'retorno') as $item) {
+        foreach (array('carrinho', 'frete', 'retorno', 'doacao') as $item) {
             $element = PagSeguro::$item();
             $this->assertTrue((bool) $element);
             $this->assertEquals('Pagseguro_'.ucfirst($item), get_class($element));
