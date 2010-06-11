@@ -153,6 +153,16 @@ class CarrinhoMostraTest extends PHPUnit_Framework_TestCase
         $saida = $this->basic_exit.$this->basic_product.'</form><script type="text/javascript>document.getElementById(\'form_pagseguro\').submit()</script>';
         $this->assertEquals($content, $saida);
     }
+
+    public function testMostraSemOpenECloseForm()
+    {
+        $content = $this->mostra(array('email_cobranca' => 'mike@visie.com.br', 'open_form' => false, 'close_form' => false),
+                        array('id' => '1', 'desc' => 'Carrinho', 'valor' => 24.7, 'quantidade' => 2));
+
+        $saida = '<input type="hidden" name="tipo" value="CP" /><input type="hidden" name="moeda" value="BRL" /><input type="hidden" name="email_cobranca" value="mike@visie.com.br" />'.$this->basic_product.'<input type="submit" value="Finalizar!" />';
+        $this->assertEquals($content, $saida);
+    }
+
 }
 
 

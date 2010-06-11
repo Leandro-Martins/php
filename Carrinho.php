@@ -7,7 +7,8 @@ class Pagseguro_Carrinho
                                            'javascript', 'button',
                                            'email_cobranca', 'ref_transacao',
                                            'tipo', 'moeda', 'tipo_frete',
-                                           'encoding', 'frete', 'peso');
+                                           'encoding', 'frete', 'peso',
+                                           'open_form', 'close_form');
     static private $_itens_config_input  = array('tipo', 'moeda',
                                            'email_cobranca', 'ref_transacao',
                                            'tipo_frete', 'encoding');
@@ -71,6 +72,8 @@ class Pagseguro_Carrinho
     public $id_formulario  = 'form_pagseguro';
     public $javascript     = false; // Imprime o javascript auto_submit. Só funciona se passar o id_formulario
     public $button         = 1;     // Botão para exibir, pode ser um inteiro indice do $_buttons ou html puro
+    public $open_form      = true;
+    public $close_form     = true;
 
     // Inputs
     public $tipo           = 'CP';  // Tipo de carrinho: CP ou CBR
@@ -224,20 +227,12 @@ class Pagseguro_Carrinho
     {
         $id = $target = $after_form = '';
 
-        if ($this->id_formulario) {
-            $id = " id=\"{$this->id_formulario}\"";
-        }
-        if ($this->target) {
-            $target = " target=\"{$this->target}\"";
-        }
-        $open_form  = sprintf('<form action="%s"%s method="post"%s>', $this->url, $id, $target);
-
+        $open_form  = $this->_mostra_open_form();
         $setup      = $this->_mostra_setup();
         $produtos   = $this->_mostra_produtos();
         $cliente    = $this->_mostra_cliente();
         $botao      = $this->_mostra_botao($this->button);
-
-        $close_form = '</form>';
+        $close_form = $this->close_form ? '</form>' : '';
         if ($this->javascript && $this->id_formulario) {
             $after_form = '<script type="text/javascript>'
                         . 'document.getElementById(\''
@@ -248,6 +243,20 @@ class Pagseguro_Carrinho
         $saida = $open_form . $interna . $botao . $close_form . $after_form;
 
         print $saida;
+    }
+
+    private function _mostra_open_form()
+    {
+        if (!$this->open_form) {
+            return '';
+        }
+        if ($this->id_formulario) {
+            $id = " id=\"{$this->id_formulario}\"";
+        }
+        if ($this->target) {
+            $target = " target=\"{$this->target}\"";
+        }
+        return sprintf('<form action="%s"%s method="post"%s>', $this->url, $id, $target);
     }
 
     private function _mostra_setup()
