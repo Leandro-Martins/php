@@ -229,7 +229,10 @@ class Pagseguro_Carrinho
         if ($this->target) {
             $target = " target=\"{$this->target}\"";
         }
-        $this->tipo = strtoupper($this->tipo) == 'CP' ? 'CP' : 'CBR';
+        if ($this->tipo) {
+            $this->tipo = strtoupper($this->tipo) == 'CP' ? 'CP' : 'CBR';
+        }
+
         $saida .= sprintf('<form action="%s"%s method="post"%s>', $this->url, $id, $target);
 
         foreach (self::$_itens_config_input as $key) {
@@ -260,8 +263,8 @@ class Pagseguro_Carrinho
     private function _mostra_produtos()
     {
         if ('CBR' === $this->tipo && count($produtos) > 1) {
-            $message = 'O carrinho do tipo CBR possui mais de um produto. '
-                     . 'Será exibido apenas o primeiro produto.';
+            $message = 'The cart type CBR may have only one product. '
+                     . 'Will be shown just one product.';
             trigger_error($message, E_USER_NOTICE);
         }
 
