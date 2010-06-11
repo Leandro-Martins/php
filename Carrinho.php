@@ -226,6 +226,13 @@ class Pagseguro_Carrinho
 
     public function mostra(array $config=array())
     {
+        if ($config) {
+            $old_config = array();
+            foreach (self::$_itens_config as $item) {
+                $old_config[$item] = $this->$item;
+            }
+            $this->set($config);
+        }
         $open_form  = $this->_mostra_open_form();
         $setup      = $this->_mostra_setup();
         $produtos   = $this->_mostra_produtos();
@@ -237,6 +244,9 @@ class Pagseguro_Carrinho
         $interna   = $setup . $produtos . $cliente;
         $saida = $open_form . $interna . $botao . $close_form . $after_form;
 
+        if (isset($old_config)) {
+            $this->set($old_config);
+        }
         if ($this->print) {
             print $saida;
         }
