@@ -81,7 +81,7 @@ class Pagseguro_Carrinho
         }
         if (in_array($key, self::$_itens_config)) {
             settype($value, 'string');
-            if ($key=='frete') {
+            if ($key=='frete' || $key=='peso') {
                 $value = $this->numero($value);
             }
             $this->$key = $value;
