@@ -204,6 +204,13 @@ class Pagseguro_Carrinho
         $saida .= $this->input('moeda', $this->moeda);
         $saida .= $this->input('email_cobranca', $this->email_cobranca);
 
+        if ($this->frete) {
+            $saida .= $this->input('item_frete_1', $this->frete);
+        }
+        if ($this->peso) {
+            $saida .= $this->input('item_peso_1', $this->peso);
+        }
+
         if ('CBR' === $this->tipo && count($produtos) > 1) {
             $message = 'O carrinho do tipo CBR possui mais de um produto. '
                      . 'Será exibido apenas o primeiro produto.';
@@ -214,6 +221,11 @@ class Pagseguro_Carrinho
         foreach ($this->produtos as $produto) {
             $item++;
             foreach ($produto as $key=>$value) {
+                $is_peso_unico  = ($key=='peso' && $this->peso);
+                $is_frete_unico = ($key=='frete' && $this->frete);
+                if ( $is_peso_unico || $is_frete_unico ) {
+                    continue 1;
+                }
                 $saida .= $this->input('item_'.$key.'_'.$item, $value);
             }
             if ('CBR' === $this->tipo) {

@@ -76,6 +76,21 @@ class CarrinhoMostraTest extends PHPUnit_Framework_TestCase
         . '<input type="submit" value="Finalizar!" /></form>';
         $this->assertEquals($expected, $content);
     }
+
+    public function testMostraFretePesoUnico()
+    {
+        $content = $this->mostra(array('email_cobranca' => 'mike@visie.com.br', 'frete' => 30, 'peso' => 2000), array(
+            array('id' => '1', 'desc' => 'Carrinho', 'valor' => 24.7, 'quantidade' => 2, 'frete'=>10),
+            array('id' => '2', 'desc' => 'Boneca', 'valor' => 35, 'quantidade' => 1, 'frete'=>50, 'peso' => 1000)
+        ));
+        $expected = $this->basic_exit
+        . '<input type="hidden" name="item_frete_1" value="3000" />'
+        . '<input type="hidden" name="item_peso_1" value="2000" />'
+        . '<input type="hidden" name="item_id_1" value="1" /><input type="hidden" name="item_descr_1" value="Carrinho" /><input type="hidden" name="item_valor_1" value="2470" /><input type="hidden" name="item_quant_1" value="2" />'
+        . '<input type="hidden" name="item_id_2" value="2" /><input type="hidden" name="item_descr_2" value="Boneca" /><input type="hidden" name="item_valor_2" value="3500" /><input type="hidden" name="item_quant_2" value="1" />'
+        . '<input type="submit" value="Finalizar!" /></form>';
+        $this->assertEquals($expected, $content);
+    }
 }
 
 
