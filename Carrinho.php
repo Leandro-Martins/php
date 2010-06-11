@@ -253,8 +253,8 @@ class Pagseguro_Carrinho
         foreach ($this->cliente as $key=>$value) {
             $saida .= $this->input('cliente_'.$key, $value);
         }
+        $saida .= $this->_mostra_botao($this->button);
 
-        $saida .= '<input type="submit" value="Finalizar!" />';
         $saida .= '</form>';
 
         print $saida;
@@ -285,5 +285,23 @@ class Pagseguro_Carrinho
             }
         }
         return $saida;
+    }
+
+    public function _mostra_botao($button)
+    {
+        if (ctype_digit($button)) {
+            $button = (int) $button;
+        }
+        if ( in_array($button, array_keys(self::$_buttons), true) ) {
+            $button = self::$_buttons[$button];
+            $pastas = '(pagamento|carrinhoproprio|docacao)';
+            $regexp = '@^image:('.$pastas.'.+\.(jpg|gif))$@';
+            if (preg_match($regexp, $button, $m)) {
+                $button = '<input type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/'
+                        . $m[1] . '" name="submit" alt="Pague com PagSeguro - é rápido,'
+                        . ' grátis e seguro!" />';
+            }
+        }
+        return $button;
     }
 }

@@ -117,6 +117,25 @@ class CarrinhoMostraTest extends PHPUnit_Framework_TestCase
         $expected = '<form action="https://pagseguro.uol.com.br/checkout/doacao.jhtml" method="post" target="pagseguro"><input type="hidden" name="moeda" value="BRL" /><input type="hidden" name="email_cobranca" value="mike@visie.com.br" /><input type="submit" value="Finalizar!" /></form>';
         $this->assertEquals($expected, $content);
     }
+
+    public function testMostraBotao3()
+    {
+        $content = $this->mostra(array('email_cobranca' => 'mike@visie.com.br', 'button' => 3),
+                        array('id' => '1', 'desc' => 'Carrinho', 'valor' => 24.7, 'quantidade' => 2));
+
+        $saida = $this->basic_exit.$this->basic_product.'<input type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/pagamento/btnPagarBR.jpg" name="submit" alt="Pague com PagSeguro - é rápido, grátis e seguro!" /></form>';
+        $this->assertEquals($content, $saida);
+    }
+
+    public function testMostraBotaoHtml()
+    {
+        $content = $this->mostra(array('email_cobranca' => 'mike@visie.com.br', 'button' => '<button type="submit">Comprar</button>'),
+                        array('id' => '1', 'desc' => 'Carrinho', 'valor' => 24.7, 'quantidade' => 2));
+
+        $saida = $this->basic_exit.$this->basic_product.'<button type="submit">Comprar</button></form>';
+        $this->assertEquals($content, $saida);
+    }
+
 }
 
 
