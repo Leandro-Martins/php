@@ -4,7 +4,7 @@
 class Pagseguro_Carrinho
 {
     static private $_itens_config  = array('url', 'email_cobranca', 'id_formulario',
-                                          'tipo', 'moeda', 'frete', 'javascript');
+                                          'target', 'tipo', 'moeda', 'frete', 'javascript');
     static private $_itens_produto = array('id', 'descr', 'quant', 'valor',
                                           'frete', 'peso');
     static private $_itens_produtos_obrigatorios = array('id', 'descr', 'quant',
@@ -39,6 +39,7 @@ class Pagseguro_Carrinho
     );
 
     public $url            = 'https://pagseguro.uol.com.br/checkout/checkout.jhtml';
+    public $target         = 'pagseguro';
     public $email_cobranca = null;
     public $id_formulario  = 'form_pagseguro';
     public $tipo           = 'CP';
@@ -172,14 +173,26 @@ class Pagseguro_Carrinho
 
     public function mostra(array $config=array())
     {
-        $saida = '';
+        $saida = $id = $target = '';
         if ($this->id_formulario) {
         	$id = " id=\"{$this->id_formulario}\"";
         }
-        $saida .= sprintf('<form action="%s"%s method="post">', $this->url, $id);
+        if ($this->target) {
+        	$target = " target=\"{$this->target}\"";
+        }
+        $saida .= sprintf('<form action="%s"%s method="post"%s>', $this->url, $id, $target);
         $saida .= $this->input('tipo', $this->tipo);
         $saida .= $this->input('moeda', $this->moeda);
         $saida .= $this->input('email_cobranca', $this->email_cobranca);
+
+        $item = 0;
+        foreach ($this->produtos as $produto) {
+        	$item++;
+        	foreach ($produto as $key=>$value) {
+            	$saida .= $this->input('item_'.$key.'_'.$item, $value);
+            }
+        }
+
         $saida .= '<input type="submit" value="Finalizar!" />';
         $saida .= '</form>';
         
