@@ -27,7 +27,7 @@ class Pagseguro_Carrinho
         'end'    => array('end', 'endereco', 'endereço', 'address', 'address1',
                           'addr', 'addr1'),
         'num'    => array('num', 'numero', 'número', 'number', 'n'),
-        'compl'  => array('compl', 'complemento', 'complement', 'address2', 
+        'compl'  => array('compl', 'complemento', 'complement', 'address2',
                           'addr2'),
         'bairro' => array('bairro'),
         'cidade' => array('cidade', 'city', 'cid'),
@@ -175,27 +175,37 @@ class Pagseguro_Carrinho
     {
         $saida = $id = $target = '';
         if ($this->id_formulario) {
-        	$id = " id=\"{$this->id_formulario}\"";
+            $id = " id=\"{$this->id_formulario}\"";
         }
         if ($this->target) {
-        	$target = " target=\"{$this->target}\"";
+            $target = " target=\"{$this->target}\"";
         }
+        $this->tipo = strtoupper($this->tipo) == 'CP' ? 'CP' : 'CBR';
         $saida .= sprintf('<form action="%s"%s method="post"%s>', $this->url, $id, $target);
         $saida .= $this->input('tipo', $this->tipo);
         $saida .= $this->input('moeda', $this->moeda);
         $saida .= $this->input('email_cobranca', $this->email_cobranca);
 
+        if ('CBR' === $this->tipo && count($produtos) > 1) {
+            $message = 'O carrinho do tipo CBR possui mais de um produto. '
+                     . 'Será exibido apenas o primeiro produto.';
+            trigger_error($message, E_USER_NOTICE);
+        }
+
         $item = 0;
         foreach ($this->produtos as $produto) {
-        	$item++;
-        	foreach ($produto as $key=>$value) {
-            	$saida .= $this->input('item_'.$key.'_'.$item, $value);
+            $item++;
+            foreach ($produto as $key=>$value) {
+                $saida .= $this->input('item_'.$key.'_'.$item, $value);
+            }
+            if ('CBR' === $this->tipo) {
+                break;
             }
         }
 
         $saida .= '<input type="submit" value="Finalizar!" />';
         $saida .= '</form>';
-        
+
         print $saida;
     }
 }
