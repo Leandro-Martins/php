@@ -91,26 +91,26 @@ Você pode setar vários valores de uma só vez passando um array ou um objeto p
 Estes são os dados padrão e os que você pode setar.
 
     // Configurações
-    public $url            = 'https://pagseguro.uol.com.br/checkout/checkout.jhtml';
-    public $target         = 'pagseguro';
-    public $id_formulario  = 'form_pagseguro';
-    public $javascript     = false; // Imprime o javascript auto_submit. Só funciona se passar o id_formulario
-    public $button         = 1;     // Botão para exibir, pode ser um inteiro indice do $_buttons ou html puro
-    public $open_form      = true;
-    public $close_form     = true;
-    public $print          = true;
+    url            = 'https://pagseguro.uol.com.br/checkout/checkout.jhtml';
+    target         = 'pagseguro';
+    id_formulario  = 'form_pagseguro';
+    javascript     = false; // Imprime o javascript auto_submit. Só funciona se passar o id_formulario
+    button         = 1;     // Botão para exibir, pode ser um inteiro indice do $_buttons ou html puro
+    open_form      = true;
+    close_form     = true;
+    print          = true;
 
     // Inputs
-    public $tipo           = 'CP';  // Tipo de carrinho: CP ou CBR
-    public $moeda          = 'BRL'; // Moeda: BRL
-    public $email_cobranca = null;  // Seu e-mail pagseguro
-    public $ref_transacao  = null;  // código único
-    public $tipo_frete     = null;  // Tipo de frete: EN, SD
-    public $encoding       = null;  // Encoding: UTF-8, UTF-16 ou US-ASCII.
+    tipo           = 'CP';  // Tipo de carrinho: CP ou CBR
+    moeda          = 'BRL'; // Moeda: BRL
+    email_cobranca = null;  // Seu e-mail pagseguro
+    ref_transacao  = null;  // código único
+    tipo_frete     = null;  // Tipo de frete: EN, SD
+    encoding       = null;  // Encoding: UTF-8, UTF-16 ou US-ASCII.
 
     // Inputs de produtos que setam valor unico: item_frete_1, item_peso_1
-    public $frete          = null;  // Frete único para todos os produtos (omite o dos outros produtos)
-    public $peso           = null;  // Peso único para todos os produtos (omite o dos outros produtos)
+    frete          = null;  // Frete único para todos os produtos (omite o dos outros produtos)
+    peso           = null;  // Peso único para todos os produtos (omite o dos outros produtos)
 
 ## O método produto
 
