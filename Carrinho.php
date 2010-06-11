@@ -3,8 +3,8 @@
 
 class Pagseguro_Carrinho
 {
-    static private $_itens_config  = array('email_cobranca', 'id_formulario',
-                                          'tipo', 'moeda', 'frete');
+    static private $_itens_config  = array('url', 'email_cobranca', 'id_formulario',
+                                          'tipo', 'moeda', 'frete', 'javascript');
     static private $_itens_produto = array('id', 'descr', 'quant', 'valor',
                                           'frete', 'peso');
     static private $_itens_produtos_obrigatorios = array('id', 'descr', 'quant',
@@ -38,8 +38,14 @@ class Pagseguro_Carrinho
         'email'  => array('email', 'e-mail', 'mail'),
     );
 
-    public $id_formulario = 'form_pagseguro';
+    public $url            = 'https://pagseguro.uol.com.br/checkout/checkout.jhtml';
     public $email_cobranca = null;
+    public $id_formulario  = 'form_pagseguro';
+    public $tipo           = 'CP';
+    public $moeda          = 'BRL';
+    public $frete          = null;
+    public $javascript     = false;
+
     public $produtos = array();
     public $cliente  = array();
 
