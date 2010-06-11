@@ -211,12 +211,23 @@ class Pagseguro_Carrinho
             $saida .= $this->input('item_peso_1', $this->peso);
         }
 
+        $saida .= $this->_mostra_produtos();
+
+        $saida .= '<input type="submit" value="Finalizar!" />';
+        $saida .= '</form>';
+
+        print $saida;
+    }
+
+    private function _mostra_produtos()
+    {
         if ('CBR' === $this->tipo && count($produtos) > 1) {
             $message = 'O carrinho do tipo CBR possui mais de um produto. '
                      . 'Será exibido apenas o primeiro produto.';
             trigger_error($message, E_USER_NOTICE);
         }
 
+        $saida = '';
         $item = 0;
         foreach ($this->produtos as $produto) {
             $item++;
@@ -232,10 +243,6 @@ class Pagseguro_Carrinho
                 break;
             }
         }
-
-        $saida .= '<input type="submit" value="Finalizar!" />';
-        $saida .= '</form>';
-
-        print $saida;
+        return $saida;
     }
 }
