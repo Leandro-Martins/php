@@ -40,12 +40,18 @@ class Pagseguro_Carrinho
 
     public $url            = 'https://pagseguro.uol.com.br/checkout/checkout.jhtml';
     public $target         = 'pagseguro';
-    public $email_cobranca = null;
     public $id_formulario  = 'form_pagseguro';
-    public $tipo           = 'CP';
-    public $moeda          = 'BRL';
-    public $frete          = null;
-    public $javascript     = false;
+    public $javascript     = false; // Imprime o javascript auto_submit
+
+    public $email_cobranca = null;  // Seu e-mail pagseguro
+    public $ref_transacao  = null;  // código único
+    public $tipo           = 'CP';  // Tipo de carrinho: CP ou CBR
+    public $moeda          = 'BRL'; // Moeda: BRL
+    public $tipo_frete     = null;  // Tipo de frete: EN, SD
+    public $encoding       = null;  // Encoding: UTF-8, UTF-16 ou US-ASCII.
+
+    public $frete          = null;  // Frete único para todos os produtos (omite o dos outros produtos)
+    public $peso           = null;  // Peso único para todos os produtos (omite o dos outros produtos)
 
     public $produtos = array();
     public $cliente  = array();
