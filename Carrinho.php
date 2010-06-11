@@ -4,13 +4,34 @@
 class Pagseguro_Carrinho
 {
     static private $_itens_config  = array('url', 'target', 'id_formulario',
-                                           'javascript', 'email_cobranca',
-                                           'ref_transacao', 'tipo', 'moeda',
-                                           'tipo_frete', 'encoding', 'frete',
-                                           'peso');
+                                           'javascript', 'button',
+                                           'email_cobranca', 'ref_transacao',
+                                           'tipo', 'moeda', 'tipo_frete',
+                                           'encoding', 'frete', 'peso');
     static private $_itens_config_input  = array('tipo', 'moeda',
                                            'email_cobranca', 'ref_transacao',
                                            'tipo_frete', 'encoding');
+    static private $_buttons = array(
+            0  => '',
+            1  => '<input type="submit" value="Finalizar!" />',
+            // Carrinho Simples
+            2  => 'image:pagamento/btnComprarBR.jpg',
+            3  => 'image:pagamento/btnPagarBR.jpg',
+            4  => 'image:pagamento/btnPagueComBR.jpg',
+            5  => 'image:pagamento/btnComprar.jpg',
+            6  => 'image:pagamento/btnPagar.jpg',
+            // Carrinho Próprio
+            7  => 'image:carrinhoproprio/btnFinalizaBR.jpg',
+            8  => 'image:carrinhoproprio/btnConcluirBR.jpg',
+            9  => 'image:carrinhoproprio/btnFinalizar.jpg',
+            10 => 'image:carrinhoproprio/btnConcluir.jpg',
+            // Doação
+            11 => 'image:doacao/btndoacao.jpg',
+            12 => 'image:doacao/btndoar.jpg',
+            13 => 'image:doacao/btndoar.jpg',
+            14 => 'image:doacao/FacaSuaDoacao.gif',
+        );
+
     static private $_itens_produto = array('id', 'descr', 'quant', 'valor',
                                           'frete', 'peso');
     static private $_itens_produtos_obrigatorios = array('id', 'descr', 'quant',
@@ -44,22 +65,29 @@ class Pagseguro_Carrinho
         'email'  => array('email', 'e-mail', 'mail'),
     );
 
+    // Configurações
     public $url            = 'https://pagseguro.uol.com.br/checkout/checkout.jhtml';
     public $target         = 'pagseguro';
     public $id_formulario  = 'form_pagseguro';
-    public $javascript     = false; // Imprime o javascript auto_submit
+    public $javascript     = false; // Imprime o javascript auto_submit. Só funciona se passar o id_formulario
+    public $button         = 1;     // Botão para exibir, pode ser um inteiro indice do $_buttons ou html puro
 
-    public $email_cobranca = null;  // Seu e-mail pagseguro
-    public $ref_transacao  = null;  // código único
+    // Inputs
     public $tipo           = 'CP';  // Tipo de carrinho: CP ou CBR
     public $moeda          = 'BRL'; // Moeda: BRL
+    public $email_cobranca = null;  // Seu e-mail pagseguro
+    public $ref_transacao  = null;  // código único
     public $tipo_frete     = null;  // Tipo de frete: EN, SD
     public $encoding       = null;  // Encoding: UTF-8, UTF-16 ou US-ASCII.
 
+    // Inputs de produtos que setam valor unico: item_frete_1, item_peso_1
     public $frete          = null;  // Frete único para todos os produtos (omite o dos outros produtos)
     public $peso           = null;  // Peso único para todos os produtos (omite o dos outros produtos)
 
+    // Produtos
     public $produtos = array();
+
+    // Cliente
     public $cliente  = array();
 
     public function __construct($args=null)

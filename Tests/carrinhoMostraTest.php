@@ -18,13 +18,13 @@ class CarrinhoMostraTest extends PHPUnit_Framework_TestCase
 
     public $basic_product = '<input type="hidden" name="item_id_1" value="1" /><input type="hidden" name="item_descr_1" value="Carrinho" /><input type="hidden" name="item_valor_1" value="2470" /><input type="hidden" name="item_quant_1" value="2" />';
 
-    public function mostra($settings, $produtos, $cliente=null)
+    public function mostra($settings, $produtos=null, $cliente=null)
     {
         $carrinho = Pagseguro::Carrinho($settings);
-        $carrinho->produto($produtos);
-        if ($cliente) {
-            $carrinho->cliente($cliente);
+        if ($produtos) {
+            $carrinho->produto($produtos);
         }
+        $carrinho->cliente($cliente);
 
         ob_start();
         $carrinho->mostra();
