@@ -3,8 +3,11 @@
 
 class Pagseguro_Carrinho
 {
-    static private $_itens_config  = array('url', 'email_cobranca', 'id_formulario',
-                                          'target', 'tipo', 'moeda', 'frete', 'javascript');
+    static private $_itens_config  = array('url', 'target', 'id_formulario',
+                                           'javascript', 'email_cobranca',
+                                           'ref_transacao', 'tipo', 'moeda',
+                                           'tipo_frete', 'encoding', 'frete',
+                                           'peso');
     static private $_itens_produto = array('id', 'descr', 'quant', 'valor',
                                           'frete', 'peso');
     static private $_itens_produtos_obrigatorios = array('id', 'descr', 'quant',
