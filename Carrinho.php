@@ -172,6 +172,17 @@ class Pagseguro_Carrinho
 
     public function mostra(array $config=array())
     {
-
+        $saida = '';
+        if ($this->id_formulario) {
+        	$id = " id=\"{$this->id_formulario}\"";
+        }
+        $saida .= sprintf('<form action="%s"%s method="post">', $this->url, $id);
+        $saida .= $this->input('tipo', $this->tipo);
+        $saida .= $this->input('moeda', $this->moeda);
+        $saida .= $this->input('email_cobranca', $this->email_cobranca);
+        $saida .= '<input type="submit" value="Finalizar!" />';
+        $saida .= '</form>';
+        
+        print $saida;
     }
 }
