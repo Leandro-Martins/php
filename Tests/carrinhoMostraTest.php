@@ -50,7 +50,7 @@ class CarrinhoMostraTest extends PHPUnit_Framework_TestCase
             'target' => '_blank'
         ), array('id' => '1', 'desc' => 'Carrinho', 'valor' => 24.7, 'quantidade' => 2));
 
-        $expected = '<form action="https://pagseguro.uol.com.br/checkout/checkout.jhtml" method="post" target="_blank"><input type="hidden" name="tipo" value="CBR" /><input type="hidden" name="moeda" value="BRL" /><input type="hidden" name="email_cobranca" value="fake@visie.com.br" />'.$this->basic_product.'<input type="submit" value="Finalizar!" /></form>';
+        $expected = '<form action="https://pagseguro.uol.com.br/checkout/checkout.jhtml" method="post" target="_blank"><input type="hidden" name="tipo" value="CBR" /><input type="hidden" name="moeda" value="BRL" /><input type="hidden" name="email_cobranca" value="fake@visie.com.br" /><input type="hidden" name="item_id" value="1" /><input type="hidden" name="item_descr" value="Carrinho" /><input type="hidden" name="item_valor" value="2470" /><input type="hidden" name="item_quant" value="2" /><input type="submit" value="Finalizar!" /></form>';
         $this->assertEquals($expected, $content);
     }
 
@@ -63,7 +63,7 @@ class CarrinhoMostraTest extends PHPUnit_Framework_TestCase
             'target' => '_blank'
         ), array('id' => '1', 'desc' => 'Carrinho', 'valor' => 24.7, 'quantidade' => 2, 'peso' => 200));
 
-        $expected = '<form action="https://pagseguro.uol.com.br/checkout/checkout.jhtml" method="post" target="_blank"><input type="hidden" name="tipo" value="CBR" /><input type="hidden" name="moeda" value="BRL" /><input type="hidden" name="email_cobranca" value="fake@visie.com.br" />'.$this->basic_product.'<input type="hidden" name="peso" value="200" /><input type="submit" value="Finalizar!" /></form>';
+        $expected = '<form action="https://pagseguro.uol.com.br/checkout/checkout.jhtml" method="post" target="_blank"><input type="hidden" name="tipo" value="CBR" /><input type="hidden" name="moeda" value="BRL" /><input type="hidden" name="email_cobranca" value="fake@visie.com.br" /><input type="hidden" name="item_id" value="1" /><input type="hidden" name="item_descr" value="Carrinho" /><input type="hidden" name="item_valor" value="2470" /><input type="hidden" name="item_quant" value="2" /><input type="hidden" name="peso" value="200" /><input type="submit" value="Finalizar!" /></form>';
         $this->assertEquals($expected, $content);
     }
 
@@ -80,7 +80,7 @@ class CarrinhoMostraTest extends PHPUnit_Framework_TestCase
         ));
 
         $expected = '<form action="https://pagseguro.uol.com.br/checkout/checkout.jhtml" method="post" target="_blank"><input type="hidden" name="tipo" value="CBR" /><input type="hidden" name="moeda" value="BRL" /><input type="hidden" name="email_cobranca" value="fake@visie.com.br" />'
-        . $this->basic_product
+        . '<input type="hidden" name="item_id" value="1" /><input type="hidden" name="item_descr" value="Carrinho" /><input type="hidden" name="item_valor" value="2470" /><input type="hidden" name="item_quant" value="2" />'
         . '<input type="submit" value="Finalizar!" /></form>';
         $this->assertEquals($expected, $content);
     }

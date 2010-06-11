@@ -336,6 +336,9 @@ class Pagseguro_Carrinho
                 }
                 $chave = 'item_'.$key.'_'.$item;
                 $is_frete_or_peso = in_array($key, array('frete', 'peso'));
+                if ($this->tipo=='CBR') {
+                    $chave = 'item_'.$key;
+                }
                 if ($is_frete_or_peso && $this->tipo=='CBR') {
                     $chave = $key;
                 }
