@@ -99,4 +99,4 @@ Informa dados ao carrinho do cliente, você pode usar este comando para passar a
 
 ## O método mostra
 
-Exibe o formulário de carrinho de compras
+Exibe o formulário de carrinho de compras, você pode passar configurações para apenas aquela exibição.
