@@ -82,7 +82,7 @@ class Pagseguro_Carrinho
         if (in_array($key, self::$_itens_config)) {
             settype($value, 'string');
             if ($key=='frete' || $key=='peso') {
-                $value = $this->numero($value);
+                $value = $this->numero($value, false);
             }
             $this->$key = $value;
         } else {
@@ -90,7 +90,7 @@ class Pagseguro_Carrinho
         }
     }
 
-    public function numero($value)
+    public function numero($value, $multiplicar = true)
     {
         if (!is_scalar($value)) {
             throw new Exception('Invalid argument to convert: '
@@ -100,7 +100,10 @@ class Pagseguro_Carrinho
             $value = preg_replace('@[^0-9,\.-]@', '', $value);
             $value = str_replace(',', '.', $value);
         }
-        $return = round($value * 100);
+        if ($multiplicar) {
+            $value = $value * 100;
+        }
+        $return = round($value);
         return $return;
     }
 
@@ -137,7 +140,10 @@ class Pagseguro_Carrinho
         settype($produto, 'object');
         $produto->valor = $this->numero($produto->valor);
         if (isset($produto->frete)) {
-            $produto->frete   = $this->numero($produto->frete);
+            $produto->frete = $this->numero($produto->frete, false);
+        }
+        if (isset($produto->peso)) {
+            $produto->peso = $this->numero($produto->peso, false);
         }
         $p = array();
         foreach ($produto as $chave => $valor) {
