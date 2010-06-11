@@ -108,6 +108,15 @@ class CarrinhoMostraTest extends PHPUnit_Framework_TestCase
         . '<input type="submit" value="Finalizar!" /></form>';
         $this->assertEquals($expected, $content);
     }
+
+    public function testDoacao()
+    {
+        // Precisa fazer este modulo urgente!
+        $content = $this->mostra(array('email_cobranca' => 'mike@visie.com.br', 'tipo' => false, 'url' => 'https://pagseguro.uol.com.br/checkout/doacao.jhtml', 'id_formulario' => false));
+
+        $expected = '<form action="https://pagseguro.uol.com.br/checkout/doacao.jhtml" method="post" target="pagseguro"><input type="hidden" name="moeda" value="BRL" /><input type="hidden" name="email_cobranca" value="mike@visie.com.br" /><input type="submit" value="Finalizar!" /></form>';
+        $this->assertEquals($expected, $content);
+    }
 }
 
 
