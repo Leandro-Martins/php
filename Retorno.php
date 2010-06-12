@@ -88,17 +88,18 @@ class Pagseguro_Retorno
         }
         $total = 0;
         for($i=1;$this->post("ProdID_{$i}");$i++) {
+        	$produto = array();
             foreach (self::$_itens_produto as $item) {
             	$var = 'Prod'.ucfirst($item).'_'.$i;
             	$numerico = $this->numerico($item);
             	$produto[$item] = $this->post($var, $numerico);
             }
-            $total     += $produto['valor'] + $produto['frete'];
+            settype($produto, 'object');
+            $total     += $produto->valor + $produto->frete;
             $produtos[] = (object) $produto;
         }
         settype($geral, 'object');
         settype($cliente, 'object');
-        settype($produtos, 'object');
         $dados = (object) compact(
             'referencia', 'total', 'cliente', 'produtos', 'geral'
         );

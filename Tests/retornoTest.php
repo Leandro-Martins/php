@@ -21,6 +21,14 @@ function retorna($string='vazio')
 	file_put_contents($file, var_export($string, true));
 }
 
+function retorna_cliente_nome($data) {
+    retorna($data->cliente->nome);
+}
+
+function retorna_total($data) {
+    retorna($data->total);
+}
+
 class RetornoTest extends PHPUnit_Framework_TestCase
 {
 	public function setUp()
@@ -72,5 +80,40 @@ class RetornoTest extends PHPUnit_Framework_TestCase
         $retorno->url = 'http://localhost/GETPOST.php?msg=VERIFICADO';
         $retorno->run();
         $this->assertTrue(file_exists($file), 'retorno VERIFICADO');
+    }
+
+    public function testNomeCliente()
+    {
+    	global $file;
+    	$_POST = array('CliNome' => 'Michael Granados');
+
+        $retorno = Pagseguro::Retorno('retorna_cliente_nome');
+        $retorno->url = 'http://localhost/GETPOST.php?msg=FALSO';
+        $retorno->url = 'http://localhost/GETPOST.php?msg=VERIFICADO';
+        $retorno->run();
+        $this->assertEquals(file_get_contents($file), "'Michael Granados'");
+    }
+
+    public function testTotal()
+    {
+    	global $file;
+    	$_POST = array(
+    	    'CliNome' => 'Michael Granados',
+    	    'ProdID_1' => '1',
+    	    'ProdDescricao_1' => 'Imagem Amarela',
+    	    'ProdValor_1' => '20,05',
+    	    'ProdQuantidade_1' => '1',
+
+    	    'ProdID_2' => '2',
+    	    'ProdDescricao_2' => 'Quantidade ao extremo',
+    	    'ProdValor_2' => '5,55',
+    	    'ProdQuantidade_2' => '1',
+    	);
+
+        $retorno = Pagseguro::Retorno('retorna_total');
+        $retorno->url = 'http://localhost/GETPOST.php?msg=FALSO';
+        $retorno->url = 'http://localhost/GETPOST.php?msg=VERIFICADO';
+        $retorno->run();
+        $this->assertEquals(file_get_contents($file), "25.6");
     }
 }
