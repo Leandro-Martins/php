@@ -50,4 +50,13 @@ class RetornoTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($data, array('email_cobranca' => 'mike@visie.com.br', 'Token' => 'APENASPARATESTE', 'Comando' => 'validar'));
     }
 
+    public function testCurlIt()
+    {
+        $retorno = Pagseguro::Retorno('retorna');
+        $retorno->url = 'http://localhost/GETPOST.php';
+        $data = $retorno->go();
+        $this->assertEquals('GET', $data);
+        $data = $retorno->go(array('nome' => 'Michael'));
+        $this->assertEquals('POST', $data);
+    }
 }
