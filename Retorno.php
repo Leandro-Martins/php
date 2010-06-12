@@ -3,6 +3,16 @@
 
 class Pagseguro_Retorno
 {
+	public $token = null;
+	public $funcao = null;
+
+	public function __construct($funcao)
+	{
+		if (defined('TOKEN')) {
+    		$this->token = constant('TOKEN');
+        }
+        $this->funcao = $funcao;
+    }
 }
 
 if (!defined('TOKEN')) define ('TOKEN', '');
