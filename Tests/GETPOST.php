@@ -1,3 +1,10 @@
 <?php
 header ('Content-type: text/plain');
-print $_SERVER['REQUEST_METHOD'];
+
+if ( $_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_GET['msg'])) {
+    print 'POST';
+} elseif ( isset($_GET['msg']) ) {
+	print $_GET['msg'];
+} else {
+	print 'GET';
+}

@@ -3,6 +3,22 @@
 
 class Pagseguro_Retorno
 {
+	static private $_itens_geral = array (
+            'VendedorEmail', 'TransacaoID', 'Referencia', 'Extras',
+            'TipoFrete', 'ValorFrete', 'Anotacao', 'DataTransacao',
+            'TipoPagamento', 'StatusTransacao', 'NumItens',
+        );
+    static private $_itens_cliente = array(
+            'nome', 'email', 'endereco', 'numero', 'complemento',
+            'bairro', 'cidade', 'estado', 'CEP', 'telefone',
+        );
+    static private $_itens_produto = array(
+            'ID', 'descricao', 'valor', 'quantidade', 'frete'
+        );
+    static private $_itens_numericos = array(
+            'ValorFrete', 'NumItens', 'valor', 'quantidade', 'frete'
+        );
+
 	public $url     = 'https://pagseguro.uol.com.br/pagseguro-ws/checkout/NPI.jhtml';
 	public $timeout = 20;
 	public $token   = null;
@@ -38,6 +54,55 @@ class Pagseguro_Retorno
         $return = curl_exec($ch);
         curl_close($ch);
         return $return;
+    }
+
+    public function post($key, $numeric = false)
+    {
+        $value = isset($_POST[$key]) ? $_POST[$key] : '';
+        if ($numeric) {
+        	$value = (double) (str_replace(',', '.', $value));
+        }
+        return $value;
+    }
+
+    public function numerico($key)
+    {
+        return in_array($key, self::$_itens_numericos);
+    }
+
+    public function run()
+    {
+    	if (!function_exists($this->funcao)) {
+        	return false;
+        }
+        if ($this->go($this->prepara($_POST)) != 'VERIFICADO') {
+            return false;
+        }
+        $geral = $cliente = $produtos = array();
+        $referencia = $this->post('Referencia');
+        foreach (self::$_itens_geral as $item) {
+            $geral[$item] = $this->post($item, $this->numerico($item));
+        }
+        foreach (self::$_itens_cliente as $item) {
+            $cliente[$item] = $this->post('Cli'.ucfirst($item));
+        }
+        $total = 0;
+        for($i=1;$this->post("ProdID_{$i}");$i++) {
+            foreach (self::$_itens_produto as $item) {
+            	$var = 'Prod'.ucfirst($item).'_'.$i;
+            	$numerico = $this->numerico($item);
+            	$produto[$item] = $this->post($var, $numerico);
+            }
+            $total     += $produto['valor'] + $produto['frete'];
+            $produtos[] = (object) $produto;
+        }
+        settype($geral, 'object');
+        settype($cliente, 'object');
+        settype($produtos, 'object');
+        $dados = (object) compact(
+            'referencia', 'total', 'cliente', 'produtos', 'geral'
+        );
+        call_user_func($this->funcao, $dados);
     }
 }
 

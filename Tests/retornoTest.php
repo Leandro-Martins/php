@@ -18,7 +18,7 @@ $file = dirname(__FILE__).DIRECTORY_SEPARATOR.'retortou';
 function retorna($string='vazio')
 {
 	global $file;
-	file_put_contents($file, var_export($string));
+	file_put_contents($file, var_export($string, true));
 }
 
 class RetornoTest extends PHPUnit_Framework_TestCase
@@ -59,5 +59,18 @@ class RetornoTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('GET', $data);
         $data = $retorno->go(array('nome' => 'Michael'));
         $this->assertEquals('POST', $data);
+    }
+
+    public function testRun()
+    {
+    	global $file;
+        $retorno = Pagseguro::Retorno('retorna');
+        $retorno->url = 'http://localhost/GETPOST.php?msg=FALSO';
+        $retorno->run();
+        $this->assertFalse(file_exists($file), 'retorno FALSO');
+
+        $retorno->url = 'http://localhost/GETPOST.php?msg=VERIFICADO';
+        $retorno->run();
+        $this->assertTrue(file_exists($file), 'retorno VERIFICADO');
     }
 }
