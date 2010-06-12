@@ -3,8 +3,10 @@
 
 class Pagseguro_Retorno
 {
-	public $token = null;
-	public $funcao = null;
+	public $url     = 'https://pagseguro.uol.com.br/pagseguro-ws/checkout/NPI.jhtml';
+	public $timeout = 20;
+	public $token   = null;
+	public $funcao  = null;
 
 	public function __construct($funcao)
 	{
@@ -13,6 +15,7 @@ class Pagseguro_Retorno
         }
         $this->funcao = $funcao;
     }
+
     public function prepara(array $post)
     {
         $post['Comando'] = 'validar';
@@ -26,7 +29,7 @@ class Pagseguro_Retorno
         curl_setopt($ch, CURLOPT_URL, $this->url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         if ($data) {
             curl_setopt($ch, CURLOPT_POST, true);

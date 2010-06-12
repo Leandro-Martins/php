@@ -41,6 +41,7 @@ class RetornoTest extends PHPUnit_Framework_TestCase
         $retorno = Pagseguro::Retorno('retorna');
         $this->assertEquals($retorno->token, 'APENASPARATESTE');
         $this->assertEquals($retorno->funcao, 'retorna');
+        $this->assertEquals($retorno->url, 'https://pagseguro.uol.com.br/pagseguro-ws/checkout/NPI.jhtml');
     }
 
 	public function testFormataValores()
