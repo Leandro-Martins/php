@@ -72,7 +72,7 @@ class Pagseguro_Retorno
 
     public function run()
     {
-    	if (!function_exists($this->funcao)) {
+    	if ( !function_exists($this->funcao) || !isset($_POST) || !count($_POST) ) {
         	return false;
         }
         if ($this->go($this->prepara($_POST)) != 'VERIFICADO') {
@@ -104,6 +104,7 @@ class Pagseguro_Retorno
             'referencia', 'total', 'cliente', 'produtos', 'geral'
         );
         call_user_func($this->funcao, $dados);
+        die();
     }
 }
 
