@@ -13,6 +13,29 @@ class Pagseguro_Retorno
         }
         $this->funcao = $funcao;
     }
+    public function prepara(array $post)
+    {
+        $post['Comando'] = 'validar';
+        $post['Token']   = $this->token;
+        return $post;
+    }
+
+    public function go($data=null)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $this->url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        if ($data) {
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        }
+        $return = curl_exec($ch);
+        curl_close($ch);
+        return $return;
+    }
 }
 
 if (!defined('TOKEN')) define ('TOKEN', '');

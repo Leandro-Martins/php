@@ -15,6 +15,12 @@ define ('TOKEN', 'APENASPARATESTE');
 global $file;
 $file = dirname(__FILE__).DIRECTORY_SEPARATOR.'retortou';
 
+function retorna($string='vazio')
+{
+	global $file;
+	file_put_contents($file, var_export($string));
+}
+
 class RetornoTest extends PHPUnit_Framework_TestCase
 {
 	public function setUp()
@@ -36,4 +42,12 @@ class RetornoTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($retorno->token, 'APENASPARATESTE');
         $this->assertEquals($retorno->funcao, 'retorna');
     }
+
+	public function testFormataValores()
+	{
+        $retorno = Pagseguro::Retorno('retorna');
+        $data = $retorno->prepara(array('email_cobranca' => 'mike@visie.com.br'));
+        $this->assertEquals($data, array('email_cobranca' => 'mike@visie.com.br', 'Token' => 'APENASPARATESTE', 'Comando' => 'validar'));
+    }
+
 }
