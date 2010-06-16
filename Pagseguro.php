@@ -23,7 +23,7 @@ class Pagseguro
 
     static function retorno($args=null)
     {
-        return self::getModule('Retorno');
+        return self::getModule('Retorno', $args);
     }
 
     static function doacao($args=null)
