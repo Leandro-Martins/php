@@ -271,7 +271,7 @@ class Pagseguro_Carrinho
     private function _mostra_after_form()
     {
         if ($this->javascript && $this->id_formulario) {
-            return '<script type="text/javascript>document.getElementById(\''
+            return '<script type="text/javascript">document.getElementById(\''
                    . $this->id_formulario . '\').submit()</script>';
         }
         return '';
